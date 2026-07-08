@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFM-MA — 空间转录组多模态基础模型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     Navigation
+     ========================================================== -->
+<div class="navbar">
+  <div class="logo">SFM<span>-MA</span></div>
+  <nav>
+    <a href="#overview">概述</a>
+    <a href="#architecture">架构</a>
+    <a href="#innovation">创新</a>
+    <a href="#application">应用</a>
+    <a href="demo.html" class="btn-nav">进入 Demo →</a>
+  </nav>
+</div>
+
+<!-- ==========================================================
+     Hero
+     ========================================================== -->
+<section class="hero" id="overview">
+  <div class="hero-content">
+    <div class="badge">🏆 全球校园人工智能算法精英大赛</div>
+    <h1>
+      <span>SFM-MA</span><br>
+      多模态预训练与轻量化适配
+    </h1>
+    <p class="subtitle">
+      面向空间转录组学的空间域识别框架 —— 跨 9 个公共数据集构建通用基础模型，
+      非对称交叉注意力融合基因表达与组织形态，冻结骨干 + 1% 标注即达最优性能。
+    </p>
+    <div class="btn-group">
+      <a href="demo.html" class="btn-primary">
+        🚀 在线体验
+      </a>
+      <a href="#architecture" class="btn-secondary">
+        了解方法 →
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="arch-placeholder">
+      <div class="icon">🧬</div>
+      <h3 style="margin-bottom:0.5rem;">SFM-MA Workflow</h3>
+      <p style="font-size:0.85rem;opacity:0.85;">
+        S1: 多数据集预训练<br>
+        ↓<br>
+        S2: 冻结骨干 + 轻量适配器
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     背景与问题
+     ========================================================== -->
+<section class="section">
+  <div class="section-title">
+    <h2>研究背景</h2>
+    <p>空间转录组学为理解组织微环境提供了前所未有的视角</p>
+  </div>
+  <div class="problem-box">
+    <h3>🔬 空间域识别（Spatial Domain Identification）</h3>
+    <p>
+      空间转录组学（ST）能够在保留组织空间位置信息的同时测量全转录组表达水平。
+      一个核心任务是<strong>空间域识别</strong>——将组织划分为具有不同转录特征和
+      空间连续性的功能区域，这对理解组织结构、疾病进展和微环境至关重要。
+    </p>
+  </div>
+  <div class="problem-box" style="border-left-color: var(--accent);">
+    <h3>⚡ 当前挑战</h3>
+    <p>
+      ① 现有方法主要依赖无监督聚类，缺乏生物语义的可解释性。<br>
+      ② 多模态融合策略多为简单拼接或对称注意力，忽略了基因表达的主导地位。<br>
+      ③ 细粒度人工标注成本极高，小样本场景下端到端微调极易过拟合。
+    </p>
+  </div>
+</section>
+
+<!-- ==========================================================
+     模型架构
+     ========================================================== -->
+<section class="section" id="architecture">
+  <div class="section-title">
+    <h2>模型架构</h2>
+    <p>两阶段解耦学习：通用表示 → 下游适配</p>
+  </div>
+  <div class="arch-section">
+    <div class="arch-img" id="arch-image-container">
+      <img src="figs/SFM-MA-workflow.png" alt="SFM-MA 模型架构图" style="width:100%;height:auto;display:block;">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;">
+      <div style="background:#f8fafc;border-radius:var(--radius-sm);padding:1.5rem;border:1px solid var(--border);">
+        <h4 style="color:var(--primary);margin-bottom:0.5rem;">Stage S1：多数据集无监督预训练</h4>
+        <ul style="font-size:0.9rem;color:var(--text-secondary);line-height:2;list-style:none;padding:0;">
+          <li>📦 跨 9 个公共数据集（28 个切片）</li>
+          <li>🔄 非对称交叉注意力融合（基因 Q ← 图像 K/V）</li>
+          <li>🌐 GCN 编码器（100→256→128）</li>
+          <li>🎯 三重自监督损失：重建 + 对比 + 邻近</li>
+        </ul>
+      </div>
+      <div style="background:#f8fafc;border-radius:var(--radius-sm);padding:1.5rem;border:1px solid var(--border);">
+        <h4 style="color:var(--accent);margin-bottom:0.5rem;">Stage S2：轻量任务适配</h4>
+        <ul style="font-size:0.9rem;color:var(--text-secondary);line-height:2;list-style:none;padding:0;">
+          <li>❄️ 冻结预训练骨干（不更新任何参数）</li>
+          <li>🧩 MLP 适配器（128→64→32→K）</li>
+          <li>🏷️ 仅需 5% 标注点（≈20 个/类）</li>
+          <li>📊 ARI 0.84 | NMI 0.78（DLPFC 151671）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     核心创新
+     ========================================================== -->
+<section class="section" id="innovation">
+  <div class="section-title">
+    <h2>核心创新</h2>
+    <p>三项关键技术突破</p>
+  </div>
+  <div class="cards-grid">
+    <div class="feature-card">
+      <div class="icon blue">🧠</div>
+      <h3>多数据集预训练</h3>
+      <p>首次在空间转录组领域引入跨数据集预训练范式，在 9 个不同平台、组织、
+      生物学背景的数据集上学习通用空间-分子表示。</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon purple">🔀</div>
+      <h3>非对称交叉注意力融合</h3>
+      <p>基因表达作为 Query、组织学图像作为 Key/Value，利用生物学先验驱动的不对称模态融合，
+      避免简单拼接或对称注意力导致的信号稀释。</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon green">⚡</div>
+      <h3>冻结骨干 + 轻量适配器</h3>
+      <p>严格解耦预训练与下游适配：基础模型保持冻结，仅训练轻量 MLP 分类器。
+      避免灾难性遗忘与过拟合，1∼5% 标注即可接近全监督水平。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     应用领域
+     ========================================================== -->
+<section class="section" id="application">
+  <div class="section-title">
+    <h2>应用领域</h2>
+    <p>覆盖多种组织类型与检测平台</p>
+  </div>
+  <div class="tags">
+    <span class="tag">🧠 脑组织（DLPFC / Mouse Brain）</span>
+    <span class="tag">🫁 肺癌</span>
+    <span class="tag">🫘 卵巢癌</span>
+    <span class="tag">🧴 乳腺癌</span>
+    <span class="tag">🧪 MERFISH</span>
+    <span class="tag">🔬 STARmap</span>
+    <span class="tag">📊 osmFISH</span>
+    <span class="tag">📐 Visium 10x</span>
+    <span class="tag">🧬 单细胞分辨率 ST</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:2rem;">
+    <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:1.2rem;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border);">
+      <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">9</div>
+      <div style="font-size:0.8rem;color:var(--text-light);">数据集</div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:1.2rem;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border);">
+      <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">28</div>
+      <div style="font-size:0.8rem;color:var(--text-light);">组织切片</div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:1.2rem;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border);">
+      <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">128K</div>
+      <div style="font-size:0.8rem;color:var(--text-light);">细胞/spot 数</div>
+    </div>
+    <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:1.2rem;text-align:center;box-shadow:var(--shadow);border:1px solid var(--border);">
+      <div style="font-size:1.8rem;font-weight:700;color:var(--primary);">0.84</div>
+      <div style="font-size:0.8rem;color:var(--text-light);">最高 ARI</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     CTA
+     ========================================================== -->
+<section class="cta-section">
+  <h2>立即体验 SFM-MA</h2>
+  <p>选择数据集、点击运行，查看空间域识别结果与基线对比</p>
+  <a href="demo.html" class="btn-primary">
+    🚀 进入交互式 Demo
+  </a>
+</section>
+
+<!-- ==========================================================
+     Footer
+     ========================================================== -->
+<div class="footer">
+  SFM-MA © 2025 — 全球校园人工智能算法精英大赛 · 算法模型创新赛
+</div>
+
+</body>
+</html>

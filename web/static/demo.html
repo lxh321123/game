@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFM-MA 交互式 Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body>
+<div class="demo-layout">
+  <!-- ── Sidebar ── -->
+  <aside class="demo-sidebar">
+    <div class="logo">SFM<span>-MA</span></div>
+    <a href="index.html" class="back-link">← 返回首页</a>
+
+    <div class="control-group">
+      <label for="sel-dataset">数据集</label>
+      <select id="sel-dataset"></select>
+    </div>
+
+    <div class="control-group" id="panel-slice" style="display:none">
+      <label for="sel-slice">切片 / 索引</label>
+      <select id="sel-slice"></select>
+    </div>
+
+    <div class="control-group">
+      <label for="sel-type">数据类型</label>
+      <select id="sel-type">
+        <option value="labeled">labeled</option>
+        <option value="unlabeled">unlabeled</option>
+        <option value="only_gene">only_gene</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="sel-adapter">适配器</label>
+      <select id="sel-adapter">
+        <option value="ce">CE (MLP)</option>
+        <option value="kl">KL (Soft)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="inp-rate">标注比例</label>
+      <input id="inp-rate" type="number" step="0.01" value="0.05" min="0.001" max="1">
+    </div>
+
+    <button id="btn-run" class="run-btn">▶ 运行推理</button>
+    <div id="status" class="status">就绪</div>
+
+    <div class="control-group" style="flex:1;display:flex;flex-direction:column;">
+      <label>实时日志</label>
+      <div class="log-box" id="log-box">等待运行...</div>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="demo-main">
+    <!-- Metrics -->
+    <div class="metrics-row" id="metrics-row" style="display:none;">
+      <div class="metric-card"><div class="metric-val" id="val-ari">-</div><div class="metric-label">ARI</div></div>
+      <div class="metric-card"><div class="metric-val" id="val-nmi">-</div><div class="metric-label">NMI</div></div>
+      <div class="metric-card"><div class="metric-val" id="val-sc">-</div><div class="metric-label">SC</div></div>
+      <div class="metric-card"><div class="metric-val" id="val-db">-</div><div class="metric-label">DB</div></div>
+      <div class="metric-card"><div class="metric-val" id="val-time">-</div><div class="metric-label">耗时(s)</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="demo-tabs" id="tabs-container" style="display:none;">
+      <button class="demo-tab active" data-tab="prediction">🎨 预测结果</button>
+      <button class="demo-tab" data-tab="comparison">📊 基线对比</button>
+      <button class="demo-tab" data-tab="embedding">🧬 嵌入可视化</button>
+    </div>
+
+    <!-- Tab: 预测结果 -->
+    <div class="tab-content active" id="tab-prediction">
+      <div class="chart-row">
+        <div class="chart-panel chart-full">
+          <h3><span class="dot" style="background:var(--primary);"></span> 空间域识别结果</h3>
+          <div class="chart-box" id="chart-spatial"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: 基线对比 -->
+    <div class="tab-content" id="tab-comparison">
+      <div class="chart-row">
+        <div class="chart-panel">
+          <h3><span class="dot" style="background:var(--primary);"></span> SFM-MA (ours)</h3>
+          <div class="chart-box" id="chart-ours"></div>
+        </div>
+        <div class="chart-panel">
+          <h3><span class="dot" style="background:#5a6a7a;"></span> Ground Truth</h3>
+          <div class="chart-box" id="chart-gt"></div>
+        </div>
+      </div>
+      <div class="chart-panel chart-full">
+        <h3><span class="dot" style="background:var(--accent);"></span> ARI 方法对比</h3>
+        <div class="chart-box" id="chart-compare" style="height:320px;"></div>
+      </div>
+    </div>
+
+    <!-- Tab: 嵌入可视化 -->
+    <div class="tab-content" id="tab-embedding">
+      <div class="chart-row">
+        <div class="chart-panel">
+          <h3><span class="dot" style="background:var(--primary);"></span> t-SNE / UMAP 嵌入</h3>
+          <div class="chart-box" id="chart-tsne"></div>
+        </div>
+        <div class="chart-panel">
+          <h3><span class="dot" style="background:#9b8af0;"></span> 聚类分布</h3>
+          <div class="chart-box" id="chart-dist"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+# Data files (too large)
+data/
+result_data/
+model/
+*.h5ad
+*.h5
+*.npy
+*.pt
+
+# Paper / LaTeX
+TCBB/
+论文/
+*.pdf
+*.aux
+*.log
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.out
+*.toc
+*.lof
+*.lot
+*.tex.tmp.*
+
+# csv
+*.csv
+
+# Debug / Temp
+debug_adapter.py
+grid_search_radius.py
+metrics_*.csv
+metrics_*.json
+batch_run_summary.json
+*交付包*
+
+# Archive
+.archive/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
