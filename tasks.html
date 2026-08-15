@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>任务列表 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link active">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">任务列表</span>
+  </div>
+  <div class="page-header">
+    <h1>📋 任务列表</h1>
+    <p>查看所有已提交的分析任务状态与结果。</p>
+  </div>
+
+  <div class="table-container">
+    <div class="table-header">
+      <h3>分析任务</h3>
+      <div class="table-search">
+        <input type="text" placeholder="🔍 搜索任务 ID..." id="taskSearch" oninput="filterTasks()">
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>任务 ID</th>
+          <th>数据集</th>
+          <th>切片</th>
+          <th>方法</th>
+          <th>状态</th>
+          <th>ARI</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="taskTableBody">
+        <tr id="noTasksRow">
+          <td colspan="7" style="text-align: center; padding: 48px; color: var(--gray-400);">
+            📭 暂无任务记录，请在<a href="predict.html">预测页面</a>提交分析任务
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<script>
+// 走 SFM.api：Flask 模式下请求 /api/tasks，静态托管时自动读浏览器 localStorage
+async function loadTasks() {
+  try {
+    renderTasks(await window.SFM.api('/api/tasks', { noCache: true }));
+  } catch (e) {
+    console.warn('任务记录读取失败:', e);
+  }
+}
+
+function renderTasks(tasks) {
+  const tbody = document.getElementById('taskTableBody');
+  if (!tasks || tasks.length === 0) return;
+  document.getElementById('noTasksRow').style.display = 'none';
+  tbody.innerHTML = tasks.map((t, i) => {
+    const tid = `SFM-${String(i+1).padStart(4,'0')}`;
+    const sl = t.slice || '';
+    return `<tr>
+      <td style="font-family: var(--font-mono); font-size: 12px;">${tid}</td>
+      <td><strong>${t.dataset}</strong></td>
+      <td>${sl || '—'}</td>
+      <td>${t.method || 'SFM-MA'}</td>
+      <td><span class="status-badge ${t.status || 'completed'}"><span class="status-dot"></span>${t.status === 'running' ? '运行中' : '已完成'}</span></td>
+      <td><strong>${t.ari != null ? (typeof t.ari === 'number' ? t.ari.toFixed(4) : t.ari) : '—'}</strong></td>
+      <td><a href="predict.html" class="btn btn-sm btn-outline">查看</a></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTasks() {
+  const q = document.getElementById('taskSearch').value.toLowerCase();
+  document.querySelectorAll('#taskTableBody tr:not(#noTasksRow)').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+loadTasks();
+</script>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

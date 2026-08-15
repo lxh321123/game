@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>参考文献 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link active">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">参考文献</span>
+  </div>
+  <div class="page-header">
+    <h1>📄 参考文献</h1>
+    <p>本研究引用的相关论文与数据集来源。</p>
+  </div>
+
+  <div class="form-section">
+    <h3>📄 本研究论文</h3>
+    <div class="card" style="margin-top: 12px; padding: 20px;">
+      <p style="font-size: 14px; line-height: 1.8;">
+        <strong>SFM-MA: A Multimodal Pretrain-and-Adapt Framework for Few-Shot Spatial Domain Identification in Spatial Transcriptomics</strong><br>
+        <span style="color: var(--gray-500);">(Submitted to TCBB, 2026)</span>
+      </p>
+      <div style="margin-top: 12px; display: flex; gap: 8px;">
+        <a href="https://github.com/lxh321123/SFM-MA" target="_blank" class="btn btn-sm btn-outline">💻 GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>📚 基准方法参考文献</h3>
+    <div class="table-container" style="box-shadow: none; border: 1px solid var(--gray-200);">
+      <table>
+        <thead><tr><th>方法</th><th>文献</th><th>年份</th></tr></thead>
+        <tbody>
+          <tr><td><strong>DeepST</strong></td><td>Xu et al., DeepST: a versatile graph contrastive learning framework for spatial transcriptomics. <em>Briefings in Bioinformatics</em></td><td>2022</td></tr>
+          <tr><td><strong>GraphST</strong></td><td>Long et al., Spatially informed clustering, integration and deconvolution of spatial transcriptomics with GraphST. <em>Nature Communications</em></td><td>2023</td></tr>
+          <tr><td><strong>STAGATE</strong></td><td>Dong et al., STAGATE: a graph attention autoencoder for spatial transcriptomics. <em>Nature Genetics</em></td><td>2023</td></tr>
+          <tr><td><strong>SEDR</strong></td><td>Xu et al., Unsupervised spatially embedded deep representation of spatial transcriptomics. <em>Genome Biology</em></td><td>2024</td></tr>
+          <tr><td><strong>stLearn</strong></td><td>Pham et al., stLearn: integrating spatial location, tissue morphology and gene expression to find cell types. <em>Nature Methods</em></td><td>2023</td></tr>
+          <tr><td><strong>SCANPY</strong></td><td>Wolf et al., SCANPY: large-scale single-cell gene expression data analysis. <em>Genome Biology</em></td><td>2018</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>🗂️ 数据集来源</h3>
+    <div class="table-container" style="box-shadow: none; border: 1px solid var(--gray-200);">
+      <table>
+        <thead><tr><th>数据集</th><th>引用</th></tr></thead>
+        <tbody>
+          <tr><td>DLPFC</td><td>Maynard et al., Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex. <em>Nature Neuroscience</em>, 2021</td></tr>
+          <tr><td>MERFISH POA</td><td>Moffitt et al., Molecular, spatial, and functional single-cell profiling of the hypothalamic preoptic region. <em>Science</em>, 2018</td></tr>
+          <tr><td>MERFISH Frontal Cortex</td><td>MERFISH frontal cortex dataset, Allen Institute</td></tr>
+          <tr><td>STARmap</td><td>Wang et al., Three-dimensional intact-tissue sequencing of single-cell transcriptional states. <em>Science</em>, 2018</td></tr>
+          <tr><td>osmFISH</td><td>Codeluppi et al., Spatial organization of the somatosensory cortex revealed by osmFISH. <em>Nature Methods</em>, 2018</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

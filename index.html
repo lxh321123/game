@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SFM-MA — 空间转录组多模态基础模型 — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link active">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <h1>
+        <span class="highlight">SFM-MA</span><br>
+        空间转录组<br>多模态基础模型
+      </h1>
+      <p>
+        Spatial Foundation Model with Multimodal Adapter — 通过"多数据集预训练 + 轻量化适配"范式，
+        仅需 5% 标注即可实现精准的空间域识别。
+      </p>
+      <div class="hero-actions">
+        <a href="predict.html" class="btn btn-primary btn-lg">🚀 开始预测</a>
+        <a href="guide.html" class="btn btn-secondary btn-lg">📖 用户指南</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="static/figs/SFM-MA-workflow.png" alt="SFM-MA Workflow">
+    </div>
+  </div>
+</section>
+
+<!-- 工作流程 -->
+<section class="section" style="background: #fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="badge">Pipeline</span>
+      <h2>两阶段工作流程</h2>
+      <p>预训练 + 适配的解耦设计，在少样本条件下保持鲁棒的识别性能</p>
+    </div>
+    <div class="workflow">
+      <div class="workflow-step">
+        <span class="step-number">1</span>
+        <span class="step-icon">🧬</span>
+        <h4>多数据集预训练</h4>
+        <p>在 9 个公开 ST 数据集上联合无监督预训练，无需人工标注</p>
+      </div>
+      <div class="workflow-connector">→</div>
+      <div class="workflow-step">
+        <span class="step-number">2</span>
+        <span class="step-icon">🔗</span>
+        <h4>非对称跨模态融合</h4>
+        <p>基因表达为指导，选择性地整合组织形态学特征</p>
+      </div>
+      <div class="workflow-connector">→</div>
+      <div class="workflow-step">
+        <span class="step-number">3</span>
+        <span class="step-icon">📐</span>
+        <h4>GCN 空间编码</h4>
+        <p>图神经网络捕获相邻 spot 的空间依赖关系</p>
+      </div>
+      <div class="workflow-connector">→</div>
+      <div class="workflow-step">
+        <span class="step-number">4</span>
+        <span class="step-icon">🎯</span>
+        <h4>轻量化适配</h4>
+        <p>冻结 backbone，仅训练 MLP 适配器，5% 标注即可</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 方法对比 -->
+<section class="section" style="background: var(--primary-50);">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="badge">Benchmark</span>
+      <h2>DLPFC 基准测试</h2>
+      <p>在 12 个 DLPFC 切片上，SFM-MA 以 5% 标注超越 6 种现有方法</p>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;">
+      <div id="benchmarkChart" style="height: 400px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); padding: 16px;"></div>
+      <div>
+        <div class="methods-showcase" style="grid-template-columns: 1fr 1fr;" id="methodCards"></div>
+        <p style="margin-top: 16px; font-size: 14px; color: var(--gray-500);" id="benchmarkNote"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 核心特点 -->
+<section class="section" style="background: #fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="badge">Features</span>
+      <h2>核心创新</h2>
+      <p>三个关键设计，使 SFM-MA 在少样本空间域识别中表现优异</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature-card">
+        <div class="fc-icon" style="background: var(--primary-100); color: var(--primary-600);">🔀</div>
+        <h3>非对称跨模态融合</h3>
+        <p>基因表达为主导模态，通过交叉注意力机制选择性整合组织图像特征，避免对称融合稀释主导信号。</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background: #D1FAE5; color: #059669;">🧩</div>
+        <h3>预训练-适配解耦</h3>
+        <p>通用表示学习与下游任务适配分离，冻结 backbone 仅训练轻量适配器，防止少样本过拟合。</p>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon" style="background: #FEF3C7; color: #D97706;">📊</div>
+        <h3>跨平台泛化</h3>
+        <p>在 Visium、MERFISH、STARmap、osmFISH 等多平台数据集上均取得稳定表现，无需平台适配。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 支持的数据集 -->
+<section class="section" style="background: var(--primary-50);">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="badge">Datasets</span>
+      <h2>支持的数据集</h2>
+      <p>涵盖 9 个公开数据集、4 种 ST 平台、多组织类型</p>
+    </div>
+    <div class="grid-4">
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🧠</div>
+        <h3 style="font-size: 15px; font-weight: 600;">DLPFC</h3>
+        <p style="font-size: 12px;">12切片 · 人脑 · Visium</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🐭</div>
+        <h3 style="font-size: 15px; font-weight: 600;">Mouse Brain</h3>
+        <p style="font-size: 12px;">1切片 · 小鼠前脑 · Visium</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🩺</div>
+        <h3 style="font-size: 15px; font-weight: 600;">Breast Cancer</h3>
+        <p style="font-size: 12px;">1切片 · 人乳腺癌 · Visium</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🔬</div>
+        <h3 style="font-size: 15px; font-weight: 600;">MERFISH POA</h3>
+        <p style="font-size: 12px;">1切片 · 小鼠下丘脑 · MERFISH</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🧬</div>
+        <h3 style="font-size: 15px; font-weight: 600;">MFC</h3>
+        <p style="font-size: 12px;">9切片 · 小鼠额叶皮层 · MERFISH</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">⭐</div>
+        <h3 style="font-size: 15px; font-weight: 600;">STARmap</h3>
+        <p style="font-size: 12px;">1切片 · 小鼠视觉皮层 · STARmap</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+        <h3 style="font-size: 15px; font-weight: 600;">osmFISH</h3>
+        <p style="font-size: 12px;">1切片 · 小鼠体感皮层 · osmFISH</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🫁</div>
+        <h3 style="font-size: 15px; font-weight: 600;">Lung Cancer</h3>
+        <p style="font-size: 12px;">1切片 · 人肺癌 · Visium</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 20px 16px;">
+        <div style="font-size: 32px; margin-bottom: 8px;">🫘</div>
+        <h3 style="font-size: 15px; font-weight: 600;">Ovarian Cancer</h3>
+        <p style="font-size: 12px;">1切片 · 人卵巢癌 · Visium</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- 迁移实验亮点 -->
+<section class="section" style="background: #fff;">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="badge">Transferability</span>
+      <h2>迁移能力的边界与机制</h2>
+      <p>六组细化实验、97 个配置、970 次种子级重复，系统回答「什么样的预训练源真正有用」</p>
+    </div>
+    <div class="finding-grid" style="max-width: 1060px; margin: 0 auto;">
+      <div class="finding" data-kind="pos">
+        <div class="finding-tag">正迁移</div>
+        <h4>多源覆盖驱动正迁移</h4>
+        <p>MERFISH POA 上完整多源预训练达 <b>0.779</b>，显著超过单数据集自训（<b>+0.110</b>）。</p>
+      </div>
+      <div class="finding" data-kind="eq">
+        <div class="finding-tag">跨平台互补</div>
+        <h4>加多样性 &gt; 加数据量</h4>
+        <p>等细胞量下 3 张 MFC + osmFISH（<b>0.571</b>）显著优于 4 张 MFC（<b>0.424</b>）。</p>
+      </div>
+      <div class="finding" data-kind="neg">
+        <div class="finding-tag">迁移边界</div>
+        <h4>同源小规模预训练无收益</h4>
+        <p>切片内留一 21/21、个体间 42/42 的差值全为负，收益只存在于全局多源预训练。</p>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 28px;">
+      <a href="experiments.html" class="btn btn-primary">📊 查看完整实验结果与统计分析</a>
+    </div>
+  </div>
+</section>
+
+<!-- 统计数字 -->
+<section class="section" style="background: linear-gradient(135deg, var(--primary-800), var(--primary-600)); color: #fff;">
+  <div class="section-inner">
+    <div class="stat-grid" style="max-width: 900px; margin: 0 auto;" id="heroStats">
+      
+      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
+        <div class="stat-value" style="color: var(--accent-light);">9</div>
+        <div class="stat-label" style="color: rgba(255,255,255,0.7);">公开数据集</div>
+      </div>
+      
+      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
+        <div class="stat-value" style="color: var(--accent-light);">28</div>
+        <div class="stat-label" style="color: rgba(255,255,255,0.7);">组织切片</div>
+      </div>
+      
+      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
+        <div class="stat-value" style="color: var(--accent-light);">128K+</div>
+        <div class="stat-label" style="color: rgba(255,255,255,0.7);">spots / cells</div>
+      </div>
+      
+      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
+        <div class="stat-value" style="color: var(--accent-light);">5%</div>
+        <div class="stat-label" style="color: rgba(255,255,255,0.7);">标注即可使用</div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var S = window.SFM;
+
+  // 基准图与方法卡：数值来自 /api/baselines，避免页面里再存一份会过期的副本
+  S.api('/api/baselines').then(function (b) {
+    var avg = b.dlpfc_average || {};
+    var ranked = b.methods.filter(function (m) { return avg[m]; })
+      .map(function (m) { return { name: m, ari: avg[m].ari, nmi: avg[m].nmi }; })
+      .sort(function (x, y) { return y.ari - x.ari; });
+
+    var shades = ['#7C3AED', '#8B5CF6', '#A78BFA', '#B9A5FB', '#C4B5FD', '#DDD6FE', '#EDE9FE'];
+    S.chart('benchmarkChart', {
+      tooltip: S.tooltipStyle({
+        trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: function (ps) {
+          var d = ranked[ps[0].dataIndex];
+          return '<b>' + d.name + '</b><br/>ARI ' + S.fmt(d.ari, 3) + '<br/>NMI ' + S.fmt(d.nmi, 3);
+        }
+      }),
+      grid: { left: 56, right: 24, top: 20, bottom: 40, containLabel: true },
+      xAxis: Object.assign({ type: 'category', data: ranked.map(function (d) { return d.name; }) },
+        S.axisStyle(), { axisLabel: { color: S.C.textSoft, fontSize: 11, rotate: 20 } }),
+      yAxis: Object.assign({ type: 'value', min: 0, max: 0.8 }, S.axisStyle('平均 ARI')),
+      series: [{
+        type: 'bar', barWidth: '55%',
+        data: ranked.map(function (d, i) {
+          return {
+            value: d.ari,
+            itemStyle: { color: shades[i] || shades[shades.length - 1], borderRadius: [5, 5, 0, 0] }
+          };
+        }),
+        label: {
+          show: true, position: 'top', fontSize: 11, color: S.C.textSoft,
+          formatter: function (p) { return S.fmt(p.value, 3); }
+        }
+      }]
+    });
+
+    document.getElementById('methodCards').innerHTML = ranked.map(function (d, i) {
+      return '<div class="method-card" style="border-color:' +
+        (i === 0 ? 'var(--primary-600)' : 'var(--gray-200)') + ';">' +
+        '<div class="mc-rank">' + (i === 0 ? '🏆' : (i + 1)) + '</div>' +
+        '<div class="mc-name">' + d.name + '</div>' +
+        '<div class="mc-ari">ARI ' + S.fmt(d.ari, 3) + '</div></div>';
+    }).join('');
+
+    if (ranked.length > 1) {
+      var top = ranked[0], second = ranked[1];
+      var rel = ((top.ari - second.ari) / second.ari * 100).toFixed(0);
+      document.getElementById('benchmarkNote').innerHTML =
+        top.name + ' 平均 ARI <strong style="color:var(--primary-600);">' + S.fmt(top.ari, 3) +
+        '</strong>，较第二名 ' + second.name + '（' + S.fmt(second.ari, 3) + '）相对提升 <strong>' +
+        rel + '%</strong>。数值为 12 个 DLPFC 切片的平均值，基线取自各方法原文报告。';
+    }
+  }).catch(function () {
+    document.getElementById('benchmarkNote').textContent =
+      '基准数据尚未生成，请运行 python web/build_web_data.py。';
+  });
+
+  // 底部统计条：同样改为实测值
+  S.api('/api/summary').then(function (d) {
+    var s = d.datasets || {};
+    var vals = [
+      [s.n_datasets, '公开数据集'],
+      [s.n_slices, '组织切片'],
+      [s.total_spots ? (s.total_spots / 1000).toFixed(0) + 'K+' : '—', 'spots / cells'],
+      ['5%', '标注即可使用']
+    ];
+    var cards = document.querySelectorAll('#heroStats .stat-card');
+    vals.forEach(function (v, i) {
+      if (!cards[i]) return;
+      cards[i].querySelector('.stat-value').textContent = v[0] == null ? '—' : v[0];
+      cards[i].querySelector('.stat-label').textContent = v[1];
+    });
+  }).catch(function () { /* 保留模板里的静态兜底数值 */ });
+})();
+</script>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

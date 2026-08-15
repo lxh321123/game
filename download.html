@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>下载中心 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link active">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">下载中心</span>
+  </div>
+  <div class="page-header">
+    <h1>⬇️ 下载中心</h1>
+    <p>预训练模型权重、基准数据集和示例数据。</p>
+  </div>
+
+  <!-- 模型权重 -->
+  <div class="form-section">
+    <h3>🧠 预训练模型</h3>
+    <p class="form-desc">SFM-MA 多数据集预训练的基础模型权重</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="card" style="display: flex; align-items: center; gap: 16px; padding: 16px 20px;">
+        <div style="font-size: 36px;">🧬</div>
+        <div style="flex:1;">
+          <h4 style="font-size: 15px; font-weight: 600;">Common Model All</h4>
+          <p style="font-size: 12px; color: var(--gray-500);">~2 MB · 全部数据联合预训练</p>
+        </div>
+        <a href="/api/download/common_model" class="btn btn-sm btn-primary">下载</a>
+      </div>
+      <div class="card" style="display: flex; align-items: center; gap: 16px; padding: 16px 20px;">
+        <div style="font-size: 36px;">📊</div>
+        <div style="flex:1;">
+          <h4 style="font-size: 15px; font-weight: 600;">Common Embedding</h4>
+          <p style="font-size: 12px; color: var(--gray-500);">~64 MB · 128K 细胞嵌入</p>
+        </div>
+        <a href="/api/download/common_embedding" class="btn btn-sm btn-primary">下载</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 基准结果 -->
+  <div class="form-section">
+    <h3>📊 基准测试结果</h3>
+    <p class="form-desc">各方法在 DLPFC 数据集上的完整基准测试结果</p>
+    <div class="table-container" style="box-shadow: none; border: 1px solid var(--gray-200);">
+      <table>
+        <thead><tr><th>资源</th><th>格式</th><th>大小</th><th>说明</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>DLPFC 完整结果</td><td>CSV</td><td>~2 KB</td><td>12 切片 × 7 方法的 ARI/NMI</td>
+            <td><a href="/api/download/benchmark" class="btn btn-sm btn-outline">下载</a></td></tr>
+          <tr><td>Cross-Gen 结果</td><td>CSV</td><td>~5 KB</td><td>跨平台泛化性结果</td>
+            <td><a href="/api/download/cross_gen" class="btn btn-sm btn-outline">下载</a></td></tr>
+          <tr><td>Subject-LOO 结果</td><td>CSV</td><td>~10 KB</td><td>DLPFC 和 MFC 留个体法结果</td>
+            <td><a href="/api/download/subject_loo" class="btn btn-sm btn-outline">下载</a></td></tr>
+          <tr><td>迁移分类结果</td><td>CSV</td><td>~3 KB</td><td>LOO vs Single 迁移分类</td>
+            <td><a href="/api/download/transfer" class="btn btn-sm btn-outline">下载</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 数据集 -->
+  <div class="form-section">
+    <h3>📦 数据集</h3>
+    <p class="form-desc">原始数据请参考原始发布来源</p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">🧠</div>
+        <h4 style="font-size: 14px; font-weight: 600;">DLPFC</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">Maynard 2021</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">🐭</div>
+        <h4 style="font-size: 14px; font-weight: 600;">Mouse Brain</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">10x Genomics</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">🩺</div>
+        <h4 style="font-size: 14px; font-weight: 600;">Breast Cancer</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">10x Genomics</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">🔬</div>
+        <h4 style="font-size: 14px; font-weight: 600;">MERFISH POA</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">Moffitt 2018</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">🧬</div>
+        <h4 style="font-size: 14px; font-weight: 600;">MFC</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">MERFISH</p>
+      </div>
+      
+      <div class="card" style="text-align: center; padding: 16px;">
+        <div style="font-size: 28px; margin-bottom: 4px;">⭐</div>
+        <h4 style="font-size: 14px; font-weight: 600;">STARmap</h4>
+        <p style="font-size: 12px; color: var(--gray-400);">Wang 2018</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

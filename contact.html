@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>联系我们 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link active">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">联系我们</span>
+  </div>
+  <div class="page-header">
+    <h1>📞 联系我们</h1>
+    <p>如有问题或建议，欢迎联系团队。</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="form-section">
+      <h3>👥 团队成员</h3>
+      <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+        <div class="card" style="display: flex; align-items: center; gap: 16px; padding: 16px 20px;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-100); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">👨‍💻</div>
+          <div>
+            <h4 style="font-size: 15px; font-weight: 600;">项目负责人</h4>
+            <p style="font-size: 13px; color: var(--gray-500);">算法设计、模型实现、实验评估</p>
+            <a href="mailto:example@email.com" style="font-size: 12px; color: var(--primary-600);">example@email.com</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>💬 反馈与支持</h3>
+      <div style="margin-top: 16px;">
+        <div style="margin-bottom: 16px;">
+          <a href="https://github.com/lxh321123/SFM-MA" target="_blank" class="btn btn-outline" style="width:100%; justify-content: center; margin-bottom: 8px;">
+            💻 GitHub 仓库
+          </a>
+          <p style="font-size: 12px; color: var(--gray-400); text-align: center;">欢迎提交 Issue 和 Pull Request</p>
+        </div>
+        <div class="form-group">
+          <label>快速反馈</label>
+          <textarea class="form-control" rows="4" placeholder="描述您的问题或建议..."></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="alert('反馈已发送，感谢您的支持！')">📨 发送反馈</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section" style="text-align: center; margin-top: 24px;">
+    <h3>📝 引用我们</h3>
+    <p style="font-size: 13px; color: var(--gray-500); margin-top: 8px;">
+      如果您在研究中使用了 SFM-MA，请引用我们的论文：
+    </p>
+    <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px; margin-top: 12px; font-size: 13px; color: var(--gray-600); font-family: var(--font-mono); text-align: left;">
+      @article{sfmma2026,<br>
+      &nbsp;&nbsp;title={SFM-MA: A Multimodal Pretrain-and-Adapt Framework for Few-Shot Spatial Domain Identification in Spatial Transcriptomics},<br>
+      &nbsp;&nbsp;author={...},<br>
+      &nbsp;&nbsp;journal={IEEE/ACM Transactions on Computational Biology and Bioinformatics},<br>
+      &nbsp;&nbsp;year={2026}<br>
+      }
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

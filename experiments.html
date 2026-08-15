@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验结果 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link active">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">实验结果</span>
+  </div>
+
+  <div class="page-header">
+    <h1>📊 实验结果与统计分析</h1>
+    <p>10 个固定随机种子 · 5% 标注 · 配对 t 检验与 bootstrap 双口径置信区间 —— 全部结果可复现、可下载。</p>
+  </div>
+
+  <!-- KPI 概览 -->
+  <div class="kpi-row" id="kpiRow">
+    <div class="kpi-card skeleton"></div><div class="kpi-card skeleton"></div>
+    <div class="kpi-card skeleton"></div><div class="kpi-card skeleton"></div>
+    <div class="kpi-card skeleton"></div>
+  </div>
+
+  <!-- 一、方法对比 -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>① 与同类方法对比</h3>
+      <span class="pill pill-primary">DLPFC 12 切片</span>
+    </div>
+    <p class="form-desc">
+      SFM-MA 与 6 个主流空间域识别方法在 DLPFC 全部 12 个切片上的平均 ARI / NMI。
+      基线数值取自各方法原文在相同切片上的报告值。
+    </p>
+    <div class="grid-2" style="align-items: start;">
+      <div class="chart-panel">
+        <h4>平均 ARI 对比</h4>
+        <div id="methodAriChart" style="height: 300px;"></div>
+      </div>
+      <div class="chart-panel">
+        <h4>逐切片 ARI（可切换方法）</h4>
+        <div id="perSliceChart" style="height: 300px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 二、三范式 -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>② 三种训练范式对比</h3>
+      <span class="pill pill-gray">26 切片 × 10 种子</span>
+    </div>
+    <p class="form-desc">
+      <b>Single</b> 仅用目标数据集自身预训练 · <b>LOO</b> 留一多源预训练（排除目标数据集）·
+      <b>PCA</b> 无预训练直接聚类。三者共用同一套种子与标注划分。
+    </p>
+    <div class="grid-2" style="align-items: start;">
+      <div class="chart-panel">
+        <h4>逐切片三范式 ARI</h4>
+        <div id="paradigmChart" style="height: 360px;"></div>
+      </div>
+      <div class="chart-panel">
+        <h4>LOO − Single 差值分布</h4>
+        <div id="paradigmDeltaChart" style="height: 360px;"></div>
+        <p class="chart-note">
+          正值表示多源预训练优于单数据集自训。灰带为等效界 ±0.0388（ε = 0.02585 的 1.5 倍）。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、迁移细化实验 -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>③ 迁移细化实验</h3>
+      <span class="pill pill-primary" id="transferCount">—</span>
+    </div>
+    <p class="form-desc">
+      对照实验设计文档的 P2 / P4 / P6 / P7–P16 / P18 / P19 六组实验，回答
+      <b>迁移边界在哪里</b>、<b>正迁移从何而来</b>、<b>源规模与源多样性哪个更重要</b>。
+    </p>
+
+    <div class="tabs" id="transferTabs"></div>
+
+    <div id="transferBody">
+      <div class="empty-state" style="padding: 40px 0;">
+        <div class="spinner"></div>
+        <p style="margin-top: 12px;">加载实验数据…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 四、结论 -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>④ 核心结论</h3>
+    </div>
+    <div class="finding-grid">
+      <div class="finding" data-kind="pos">
+        <div class="finding-tag">正迁移</div>
+        <h4>多源覆盖驱动正迁移</h4>
+        <p>在 MERFISH POA 上，完整多源 LOO 达 <b>0.779</b>，显著超过 Single（<b>+0.110</b>），是全部实验中唯一的显著正迁移。</p>
+      </div>
+      <div class="finding" data-kind="eq">
+        <div class="finding-tag">跨平台互补</div>
+        <h4>加多样性 &gt; 加数据量</h4>
+        <p>等细胞量下，3 张 MFC + osmFISH（<b>0.571</b>）显著优于 4 张 MFC（<b>0.424</b>），差距达 <b>0.147</b>。</p>
+      </div>
+      <div class="finding" data-kind="neg">
+        <div class="finding-tag">迁移边界</div>
+        <h4>数据集内部迁移全为负</h4>
+        <p>P2 切片内留一 21/21、P4 个体间 42/42 的 Δ 全部为负 —— 收益只存在于全局多源预训练层面。</p>
+      </div>
+      <div class="finding" data-kind="eq">
+        <div class="finding-tag">主控因素</div>
+        <h4>目标不同，主因不同</h4>
+        <p>目标小而简单（POA）时源<b>多样性</b>主导；目标大而复杂（Breast、osmFISH）时源<b>相似度</b>主导。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 五、下载 -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>⑤ 结果数据下载</h3>
+    </div>
+    <p class="form-desc">全部原始 per-seed 明细与统计汇总均可下载，供复现与核对。</p>
+    <div class="download-grid" id="downloadGrid"></div>
+  </div>
+
+</div>
+</section>
+
+<script>
+(function () {
+  var S = window.SFM;
+
+  // ── KPI ────────────────────────────────────────────────
+  S.api('/api/summary').then(function (d) {
+    var ds = d.datasets || {}, tr = d.transfer || {}, dl = d.dlpfc || {};
+    var items = [
+      { v: ds.n_datasets, l: '公开数据集', s: (ds.platforms || []).length + ' 种测序平台' },
+      { v: ds.n_slices, l: '组织切片', s: S.fmtInt(ds.total_spots) + ' 个 spot / cell' },
+      { v: tr.n_config, l: '迁移实验配置', s: S.fmtInt(tr.n_runs) + ' 次种子级重复' },
+      { v: S.fmt(dl.sfm_ma, 3), l: 'DLPFC 平均 ARI', s: '较最优基线 ' + S.fmtDelta(dl.gain, 3), hi: true },
+      { v: 10, l: '固定随机种子', s: '配对 t + bootstrap 双口径' }
+    ];
+    document.getElementById('kpiRow').innerHTML = items.map(function (i) {
+      return '<div class="kpi-card' + (i.hi ? ' kpi-hi' : '') + '">' +
+        '<div class="kpi-value">' + (i.v === null || i.v === undefined ? '—' : i.v) + '</div>' +
+        '<div class="kpi-label">' + i.l + '</div>' +
+        '<div class="kpi-sub">' + i.s + '</div></div>';
+    }).join('');
+  }).catch(function (e) {
+    document.getElementById('kpiRow').innerHTML =
+      '<div class="alert alert-warn">概览数据加载失败：' + e.message + '</div>';
+  });
+
+  // ── ① 方法对比 ─────────────────────────────────────────
+  S.api('/api/baselines').then(function (b) {
+    var avg = b.dlpfc_average || {};
+    var names = b.methods.filter(function (m) { return avg[m]; });
+    S.barCompare('methodAriChart', names,
+      names.map(function (m) { return avg[m].ari; }),
+      { highlight: 'SFM-MA', xName: '平均 ARI', max: 0.75 });
+
+    // 逐切片折线：SFM-MA 加粗，其余细线
+    var per = b.dlpfc_per_slice || {};
+    var slices = Object.keys(per['SFM-MA'] || {}).sort();
+    var series = b.methods.filter(function (m) { return per[m]; }).map(function (m, i) {
+      var isOurs = m === 'SFM-MA';
+      return {
+        name: m, type: 'line', smooth: true, symbolSize: isOurs ? 6 : 3,
+        z: isOurs ? 10 : 1,
+        lineStyle: { width: isOurs ? 3 : 1.2, opacity: isOurs ? 1 : 0.55 },
+        itemStyle: { color: isOurs ? S.C.primary : S.PALETTE[(i + 1) % S.PALETTE.length] },
+        data: slices.map(function (s) { return per[m][s] ? per[m][s][0] : null; })
+      };
+    });
+    S.chart('perSliceChart', {
+      tooltip: S.tooltipStyle({ trigger: 'axis' }),
+      legend: { type: 'scroll', bottom: 0, textStyle: { fontSize: 10, color: S.C.textSoft } },
+      grid: { left: 46, right: 16, top: 16, bottom: 44, containLabel: true },
+      xAxis: Object.assign({ type: 'category', data: slices, boundaryGap: false },
+        S.axisStyle(), { axisLabel: { color: S.C.textSoft, fontSize: 9, rotate: 40 } }),
+      yAxis: Object.assign({ type: 'value', min: 0, max: 0.95 }, S.axisStyle('ARI')),
+      series: series
+    });
+  });
+
+  // ── ② 三范式 ───────────────────────────────────────────
+  S.api('/api/paradigm').then(function (p) {
+    var rows = p.rows.filter(function (r) { return r.Single != null && r.LOO != null; });
+    var labels = rows.map(function (r) {
+      return r.slice ? r.dataset.replace('MERFISH_frontal_cortex', 'MFC') + '/' + r.slice
+        : r.dataset.replace('_', ' ');
+    });
+    var mk = function (k, color) {
+      return {
+        name: k, type: 'bar', barGap: '8%',
+        itemStyle: { color: color, borderRadius: [3, 3, 0, 0] },
+        data: rows.map(function (r) { return r[k]; })
+      };
+    };
+    S.chart('paradigmChart', {
+      tooltip: S.tooltipStyle({ trigger: 'axis', axisPointer: { type: 'shadow' } }),
+      legend: { top: 0, textStyle: { fontSize: 11, color: S.C.textSoft } },
+      grid: { left: 46, right: 16, top: 34, bottom: 76, containLabel: true },
+      xAxis: Object.assign({ type: 'category', data: labels },
+        S.axisStyle(), { axisLabel: { color: S.C.textSoft, fontSize: 9, rotate: 52 } }),
+      yAxis: Object.assign({ type: 'value', max: 1 }, S.axisStyle('ARI')),
+      series: [mk('Single', S.C.primary), mk('LOO', '#F59E0B'), mk('PCA', S.C.grayLine)]
+    });
+
+    var deltas = rows.map(function (r) { return r.delta_loo_single; });
+    S.chart('paradigmDeltaChart', {
+      tooltip: S.tooltipStyle({
+        trigger: 'axis',
+        formatter: function (ps) {
+          var p = ps[0];
+          return labels[p.dataIndex] + '<br/>Δ(LOO − Single) = <b>' + S.fmtDelta(p.value) + '</b>';
+        }
+      }),
+      grid: { left: 46, right: 16, top: 16, bottom: 76, containLabel: true },
+      xAxis: Object.assign({ type: 'category', data: labels },
+        S.axisStyle(), { axisLabel: { color: S.C.textSoft, fontSize: 9, rotate: 52 } }),
+      yAxis: Object.assign({ type: 'value' }, S.axisStyle('Δ ARI')),
+      series: [{
+        type: 'bar',
+        data: deltas.map(function (v) {
+          return {
+            value: v,
+            itemStyle: {
+              color: v > 0.0388 ? S.C.pos : (v < -0.0388 ? S.C.neg : S.C.warn),
+              borderRadius: v >= 0 ? [3, 3, 0, 0] : [0, 0, 3, 3]
+            }
+          };
+        }),
+        markArea: {
+          silent: true, itemStyle: { color: 'rgba(156,163,175,0.16)' },
+          data: [[{ yAxis: -0.0388 }, { yAxis: 0.0388 }]]
+        },
+        markLine: {
+          silent: true, symbol: 'none',
+          lineStyle: { color: S.C.gray, width: 1 },
+          data: [{ yAxis: 0 }], label: { show: false }
+        }
+      }]
+    });
+  });
+
+  // ── ③ 迁移细化实验 ─────────────────────────────────────
+  var TRANSFER = null, activeKey = null;
+
+  S.api('/api/transfer').then(function (t) {
+    TRANSFER = t;
+    document.getElementById('transferCount').textContent =
+      t.summary.n_config + ' 个配置 · ' + S.fmtInt(t.summary.n_runs) + ' 次运行';
+
+    document.getElementById('transferTabs').innerHTML = t.groups.map(function (g, i) {
+      return '<button class="tab' + (i === 0 ? ' active' : '') + '" data-key="' + g.key + '">' +
+        '<span class="tab-tag">' + g.tag + '</span>' + g.title.split('（')[0] + '</button>';
+    }).join('');
+
+    document.getElementById('transferTabs').addEventListener('click', function (e) {
+      var btn = e.target.closest('.tab');
+      if (!btn) return;
+      [].forEach.call(this.querySelectorAll('.tab'), function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderGroup(btn.dataset.key);
+    });
+
+    renderGroup(t.groups[0].key);
+  }).catch(function (e) {
+    document.getElementById('transferBody').innerHTML =
+      '<div class="alert alert-warn">迁移实验数据加载失败：' + e.message + '</div>';
+  });
+
+  function renderGroup(key) {
+    activeKey = key;
+    var g = TRANSFER.groups.filter(function (x) { return x.key === key; })[0];
+    if (!g) return;
+
+    var ref = g.reference || {};
+    var refHtml = ['loo', 'single', 'pca'].filter(function (k) { return ref[k] != null; })
+      .map(function (k) {
+        var name = { loo: '完整 LOO', single: 'Single', pca: 'PCA' }[k];
+        return '<div class="ref-chip"><span class="ref-name">' + name + '</span>' +
+          '<span class="ref-val">' + S.fmt(ref[k], 3) + '</span></div>';
+      }).join('');
+
+    var head = '<div class="group-head">' +
+      '<div><h4>' + g.tag + ' · ' + g.title + '</h4><p>' + g.desc + '</p></div>' +
+      '<div class="group-stats">' +
+      '<div class="gs"><b>' + g.n_config + '</b><span>配置</span></div>' +
+      '<div class="gs"><b>' + S.fmt(g.mean_ari, 3) + '</b><span>平均 ARI</span></div>' +
+      '<div class="gs"><b class="' + S.deltaClass(g.mean_delta) + '">' + S.fmtDelta(g.mean_delta, 3) +
+      '</b><span>平均 Δ</span></div>' +
+      '</div></div>' +
+      (refHtml ? '<div class="ref-row"><span class="ref-label">参考基线</span>' + refHtml + '</div>' : '');
+
+    var chartId = 'forest_' + key;
+    var body = '<div class="grid-2" style="align-items:start;">' +
+      '<div class="chart-panel"><h4>Δ (迁移 − Single) 与 95% 置信区间</h4>' +
+      '<div id="' + chartId + '" style="height:' + Math.max(300, Math.min(30 * g.rows.length + 70, 720)) + 'px;"></div>' +
+      '<p class="chart-note">点为 10 种子配对均值，横线为 95% CI；灰带为等效界 ±0.0388。' +
+      'CI 完全落在灰带内记为等效迁移 (ET)。</p></div>' +
+      '<div class="chart-panel"><h4>逐配置明细</h4>' + table(g) + '</div></div>';
+
+    document.getElementById('transferBody').innerHTML = head + body;
+    forest(chartId, g);
+  }
+
+  function table(g) {
+    var rows = g.rows.slice().sort(function (a, b) { return b.delta - a.delta; });
+    var body = rows.map(function (r) {
+      return '<tr>' +
+        '<td class="mono">' + r.name + '</td>' +
+        '<td class="num">' + S.fmt(r.ari, 3) + '<span class="sd"> ±' + S.fmt(r.std, 3) + '</span></td>' +
+        '<td class="num ' + S.deltaClass(r.delta) + '">' + S.fmtDelta(r.delta) + '</td>' +
+        '<td class="num mono small">[' + S.fmt(r.ci95[0], 3) + ', ' + S.fmt(r.ci95[1], 3) + ']</td>' +
+        '<td class="num small">' + S.fmtP(r.p) + ' <b>' + r.sig + '</b></td>' +
+        '<td><span class="cat-badge ' + S.catClass(r.cat) + '">' + r.cat + '</span></td>' +
+        '</tr>';
+    }).join('');
+    return '<div class="table-scroll"><table class="data-table"><thead><tr>' +
+      '<th>配置</th><th class="num">ARI ± std</th><th class="num">Δ vs Single</th>' +
+      '<th class="num">95% CI</th><th class="num">p 值</th><th>分类</th>' +
+      '</tr></thead><tbody>' + body + '</tbody></table></div>';
+  }
+
+  /** 森林图：均值点 + 95%CI 误差棒 + 等效界灰带 */
+  function forest(id, g) {
+    var rows = g.rows.slice().sort(function (a, b) { return a.delta - b.delta; });
+    var names = rows.map(function (r) { return r.name; });
+
+    S.chart(id, {
+      tooltip: S.tooltipStyle({
+        trigger: 'item',
+        formatter: function (p) {
+          var r = rows[p.dataIndex];
+          if (!r) return '';
+          return '<b>' + r.name + '</b><br/>' +
+            'ARI ' + S.fmt(r.ari) + ' ± ' + S.fmt(r.std) + '<br/>' +
+            'Single ' + S.fmt(r.single) + '<br/>' +
+            'Δ <b>' + S.fmtDelta(r.delta) + '</b><br/>' +
+            '95%CI [' + S.fmt(r.ci95[0]) + ', ' + S.fmt(r.ci95[1]) + ']<br/>' +
+            'p = ' + S.fmtP(r.p) + ' ' + r.sig + '<br/>' +
+            '<span style="color:' + S.C.textSoft + '">' + r.cat + '</span>';
+        }
+      }),
+      grid: { left: 8, right: 24, top: 12, bottom: 30, containLabel: true },
+      xAxis: Object.assign({ type: 'value' }, S.axisStyle('Δ (迁移 − Single)')),
+      yAxis: Object.assign({ type: 'category', data: names },
+        S.axisStyle(), {
+          axisLabel: { color: S.C.textSoft, fontSize: 10 },
+          splitLine: { show: false }
+        }),
+      series: [
+        {
+          // 误差棒：用 custom 画 95% CI 的横线与端帽
+          type: 'custom', silent: true,
+          renderItem: function (params, apiRI) {
+            var idx = apiRI.value(0);
+            var lo = apiRI.coord([apiRI.value(1), idx]);
+            var hi = apiRI.coord([apiRI.value(2), idx]);
+            var half = 4;
+            var style = { stroke: S.C.gray, lineWidth: 1.4 };
+            return {
+              type: 'group', children: [
+                { type: 'line', shape: { x1: lo[0], y1: lo[1], x2: hi[0], y2: hi[1] }, style: style },
+                { type: 'line', shape: { x1: lo[0], y1: lo[1] - half, x2: lo[0], y2: lo[1] + half }, style: style },
+                { type: 'line', shape: { x1: hi[0], y1: hi[1] - half, x2: hi[0], y2: hi[1] + half }, style: style }
+              ]
+            };
+          },
+          encode: { x: [1, 2], y: 0 },
+          data: rows.map(function (r, i) { return [i, r.ci95[0], r.ci95[1]]; })
+        },
+        {
+          type: 'scatter', symbolSize: 9,
+          data: rows.map(function (r, i) {
+            return {
+              value: [r.delta, i],
+              itemStyle: {
+                color: r.delta > 0.0388 ? S.C.pos : (r.delta < -0.0388 ? S.C.neg : S.C.warn)
+              }
+            };
+          }),
+          markArea: {
+            silent: true, itemStyle: { color: 'rgba(156,163,175,0.16)' },
+            data: [[{ xAxis: -0.0388 }, { xAxis: 0.0388 }]]
+          },
+          markLine: {
+            silent: true, symbol: 'none',
+            lineStyle: { color: S.C.gray, width: 1, type: 'solid' },
+            data: [{ xAxis: 0 }], label: { show: false }
+          }
+        }
+      ],
+      animation: false
+    });
+  }
+
+  // ── ⑤ 下载清单 ─────────────────────────────────────────
+  S.api('/api/downloads').then(function (list) {
+    var keys = ['transfer_all', 'p2', 'p4', 'p6', 'scale', 'p18', 'p19', 'subject_loo', 'benchmark'];
+    var byKey = {};
+    list.forEach(function (i) { byKey[i.key] = i; });
+    document.getElementById('downloadGrid').innerHTML = keys.map(function (k) {
+      var i = byKey[k];
+      if (!i) return '';
+      // 静态导出时 downloads.json 自带 href（指向 files/），Flask 模式下没有这个字段，
+      // 退回 /api/download/<key>。这样两种部署都不依赖事后改写链接。
+      var link = i.available
+        ? ' href="' + (i.href || ('/api/download/' + k)) + '"' +
+          (i.href ? ' download="' + i.filename + '"' : '')
+        : '';
+      return '<a class="dl-card' + (i.available ? '' : ' disabled') + '"' + link + '>' +
+        '<div class="dl-icon">' + (i.filename.endsWith('.xlsx') ? '📗' : '📄') + '</div>' +
+        '<div class="dl-meta"><b>' + i.desc + '</b>' +
+        '<span>' + i.filename +
+        (i.available ? ' · ' + i.size_kb + ' KB' : ' · ' + (i.reason || '未生成')) +
+        '</span></div></a>';
+    }).join('');
+  });
+})();
+</script>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

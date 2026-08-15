@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用户指南 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link active">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">用户指南</span>
+  </div>
+  <div class="page-header">
+    <h1>📖 用户指南</h1>
+    <p>分步说明，帮助您快速上手 SFM-MA 平台。</p>
+  </div>
+
+  <div class="grid-2" style="align-items: start;">
+    <div>
+      <div class="form-section">
+        <h3>📌 快速开始</h3>
+        <p class="form-desc">三步完成空间域识别分析</p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card" style="display: flex; gap: 16px; align-items: flex-start;">
+            <span class="step-number" style="flex-shrink: 0; width: 36px; height: 36px; font-size: 15px;">1</span>
+            <div>
+              <h4 style="font-size: 15px; font-weight: 600;">选择数据集</h4>
+              <p style="font-size: 13px; color: var(--gray-500);">从 9 个公开数据集中选择目标组织切片，涵盖人脑、小鼠脑、肿瘤等多种组织。</p>
+            </div>
+          </div>
+          <div class="card" style="display: flex; gap: 16px; align-items: flex-start;">
+            <span class="step-number" style="flex-shrink: 0; width: 36px; height: 36px; font-size: 15px;">2</span>
+            <div>
+              <h4 style="font-size: 15px; font-weight: 600;">选择方法</h4>
+              <p style="font-size: 13px; color: var(--gray-500);">选择 SFM-MA 或对比方法进行分析。推荐使用 SFM-MA 获得最佳效果。</p>
+            </div>
+          </div>
+          <div class="card" style="display: flex; gap: 16px; align-items: flex-start;">
+            <span class="step-number" style="flex-shrink: 0; width: 36px; height: 36px; font-size: 15px;">3</span>
+            <div>
+              <h4 style="font-size: 15px; font-weight: 600;">查看结果</h4>
+              <p style="font-size: 13px; color: var(--gray-500);">即时查看空间域分布图、ARI/NMI 指标、嵌入可视化和方法对比。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>🎯 适用场景</h3>
+        <ul style="padding-left: 20px; line-height: 2; color: var(--gray-600);">
+          <li><strong>组织微环境解析</strong> — 识别肿瘤组织中的不同功能区域</li>
+          <li><strong>皮层结构分层</strong> — 自动识别大脑皮层的 6 层结构</li>
+          <li><strong>跨平台验证</strong> — 在不同 ST 技术间验证域识别结果</li>
+          <li><strong>少样本标注</strong> — 仅需 5% 标注即可达到接近全监督的性能</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="form-section">
+        <h3>📊 指标说明</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          
+          <div class="card" style="padding: 14px 18px;">
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--primary-700);">ARI</h4>
+            <p style="font-size: 12px; color: var(--gray-500); line-height: 1.6;">衡量预测域与真实标注的一致程度，取值范围 [-1, 1]，越大越好。考虑随机矫正，是聚类评估的黄金标准。</p>
+          </div>
+          
+          <div class="card" style="padding: 14px 18px;">
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--primary-700);">NMI</h4>
+            <p style="font-size: 12px; color: var(--gray-500); line-height: 1.6;">衡量预测域与真实标注之间的互信息，取值范围 [0, 1]，越大越好。对标签顺序不敏感。</p>
+          </div>
+          
+          <div class="card" style="padding: 14px 18px;">
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--primary-700);">SC</h4>
+            <p style="font-size: 12px; color: var(--gray-500); line-height: 1.6;">衡量嵌入空间中聚类的紧致度与分离度，取值范围 [-1, 1]，越大越好。用于无标注数据集的评估。</p>
+          </div>
+          
+          <div class="card" style="padding: 14px 18px;">
+            <h4 style="font-size: 14px; font-weight: 600; color: var(--primary-700);">DBI</h4>
+            <p style="font-size: 12px; color: var(--gray-500); line-height: 1.6;">衡量聚类内相似度与聚类间差异度的比值，越小越好。用于无标注数据集的评估。</p>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>⚙️ 本地运行</h3>
+        <p style="font-size: 13px; color: var(--gray-500); margin-bottom: 12px;">
+          如需批量分析或在本地运行，请使用命令行：
+        </p>
+        <div style="background: var(--gray-900); color: #A0E8C0; padding: 16px; border-radius: 8px; font-family: var(--font-mono); font-size: 13px; line-height: 1.8;">
+          # 运行 SFM-MA 适配器<br>
+          python run_adapter.py --data_name DLPFC --section 151671<br><br>
+          # 批量 LOO 实验<br>
+          python leave_one_out.py --device cuda<br><br>
+          # 跨平台泛化测试<br>
+          python cross_generalization.py --device cuda
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线预测 — SFM-MA — Spatial Foundation Model</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      SFM-MA
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon">🏠</span>首页
+      </a>
+      <a href="predict.html" class="nav-link active">
+        <span class="nav-icon">🔬</span>预测
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon">📊</span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon">📋</span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon">⬇️</span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon">📄</span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon">📖</span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon">📞</span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+
+  <div class="breadcrumb">
+    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">在线预测</span>
+  </div>
+
+  <div class="page-header">
+    <h1>🔬 空间域识别预测</h1>
+    <p>选择数据集与方法，即时查看空间域识别结果、嵌入分布与性能指标。</p>
+  </div>
+
+  <div class="grid-2" style="align-items: start;">
+    <!-- ── 左侧：参数表单 ─────────────────────────── -->
+    <div>
+      <div class="form-section">
+        <h3>📦 数据集选择</h3>
+        <p class="form-desc">选择需要分析的空间转录组数据集和切片</p>
+
+        <div class="form-group">
+          <label>数据集</label>
+          <div class="label-desc">选择平台、组织和物种</div>
+          <select class="form-control" id="datasetSelect">
+            <option value="">— 加载中 —</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="sliceGroup" style="display:none;">
+          <label>切片</label>
+          <div class="label-desc">该数据集包含多个组织切片</div>
+          <select class="form-control" id="sliceSelect">
+            <option value="">— 请选择切片 —</option>
+          </select>
+        </div>
+
+        <div id="datasetInfo"></div>
+      </div>
+
+      <div class="form-section">
+        <h3>⚙️ 方法选择</h3>
+        <p class="form-desc">SFM-MA 为本框架实测结果；其余方法为同类工作的报告值，用于对照</p>
+        <div class="methods-showcase"
+             style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));"
+             id="methodGrid"></div>
+      </div>
+
+      <div class="form-section">
+        <h3>🔧 参数配置</h3>
+        <p class="form-desc">推理参数设置</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>适配器类型</label>
+            <select class="form-control" id="adapterSelect">
+              <option value="ce">CE（交叉熵）</option>
+              <option value="kl">KL（KL 散度）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>标注比例</label>
+            <select class="form-control" id="labelRateSelect">
+              <option value="0.01">1%</option>
+              <option value="0.02">2%</option>
+              <option value="0.03">3%</option>
+              <option value="0.05" selected>5%（推荐）</option>
+              <option value="0.10">10%</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-tip">
+          <span class="tip-icon">💡</span>
+          <span>本页展示的是<b>已完成推理的预计算结果</b>，提交即查，不在浏览器端重新训练。
+            如需用新参数重跑，请在服务器执行
+            <code>python run_adapter.py --data_name &lt;数据集&gt; --section &lt;切片&gt;</code>，
+            再运行 <code>python web/build_web_data.py</code> 刷新本页数据。</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" style="width:100%;" id="submitBtn">
+        🚀 开始分析
+      </button>
+    </div>
+
+    <!-- ── 右侧：结果 ─────────────────────────────── -->
+    <div>
+      <div id="resultArea" style="display:none;">
+        <div class="form-section">
+          <div class="section-title-row">
+            <h3>📊 分析结果</h3>
+            <span class="pill pill-primary" id="resultTitle">—</span>
+          </div>
+
+          <div class="stat-grid" id="metricsGrid" style="margin-bottom: 16px;">
+            <div class="stat-card"><div class="stat-value" id="ariValue">—</div><div class="stat-label">ARI</div></div>
+            <div class="stat-card"><div class="stat-value" id="nmiValue">—</div><div class="stat-label">NMI</div></div>
+            <div class="stat-card"><div class="stat-value" id="scValue">—</div><div class="stat-label">Silhouette</div></div>
+            <div class="stat-card"><div class="stat-value" id="dbValue">—</div><div class="stat-label">DBI</div></div>
+          </div>
+
+          <div id="metricNote"></div>
+
+          <h4 style="font-size:14px;font-weight:600;margin:16px 0 8px;">方法对比（当前切片）</h4>
+          <div id="methodComparisonChart" style="height: 260px;"></div>
+          <p class="chart-note" id="compareNote"></p>
+        </div>
+
+        <div class="form-section" id="spatialSection">
+          <h3>🗺️ 空间域可视化</h3>
+          <p class="form-desc">左：模型预测的空间域　右：真实标注</p>
+          <div class="viz-meta" id="vizMeta"></div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div id="spatialPredChart" style="height: 360px;"></div>
+            <div id="spatialGTChart" style="height: 360px;"></div>
+          </div>
+        </div>
+
+        <div class="form-section" id="embeddingSection">
+          <h3>🔮 嵌入空间可视化</h3>
+          <p class="form-desc">SFM-MA 输出的 128 维 spot 嵌入，经 PCA 投影到前两个主成分</p>
+          <div id="embeddingChart" style="height: 360px;"></div>
+          <p class="chart-note" id="embNote"></p>
+        </div>
+
+        <div style="display: flex; gap: 12px;">
+          <button class="btn btn-outline" id="exportBtn">📥 导出结果 JSON</button>
+          <button class="btn btn-outline" id="resetBtn">🔄 重新选择</button>
+        </div>
+      </div>
+
+      <div id="emptyArea">
+        <div class="empty-state">
+          <div class="empty-icon">🔬</div>
+          <h3>选择数据集开始分析</h3>
+          <p>在左侧选择数据集和方法，点击「开始分析」查看空间域识别结果。</p>
+        </div>
+      </div>
+
+      <div id="loadingArea" style="display:none;">
+        <div class="loading-overlay">
+          <div class="spinner" style="width: 40px; height: 40px; border-width: 3px;"></div>
+          <p id="loadingText">正在加载分析结果…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+(function () {
+  var S = window.SFM;
+  var INDEX = null, BASELINES = null;
+  var selectedMethod = 'SFM-MA';
+  var current = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id, on) { $(id).style.display = on ? 'block' : 'none'; };
+
+  // ── 初始化：数据集下拉 + 方法卡片，全部来自 API ────────
+  Promise.all([S.api('/api/datasets'), S.api('/api/baselines')])
+    .then(function (r) {
+      INDEX = r[0]; BASELINES = r[1];
+
+      $('datasetSelect').innerHTML = '<option value="">— 请选择数据集 —</option>' +
+        INDEX.datasets.map(function (d) {
+          var n = d.n_slices;
+          return '<option value="' + d.name + '">' + d.label +
+            '（' + d.platform + ' · ' + n + ' 切片）</option>';
+        }).join('');
+
+      var avg = BASELINES.dlpfc_average || {};
+      $('methodGrid').innerHTML = BASELINES.methods.map(function (m, i) {
+        var a = avg[m] ? avg[m].ari : null;
+        return '<div class="method-card' + (i === 0 ? ' selected' : '') + '" data-method="' + m + '">' +
+          '<div class="mc-rank" style="font-size:18px;">' + (i === 0 ? '🏆' : '') + '</div>' +
+          '<div class="mc-name">' + m + '</div>' +
+          '<div class="mc-ari">ARI ' + S.fmt(a, 2) + '</div></div>';
+      }).join('');
+
+      $('methodGrid').addEventListener('click', function (e) {
+        var card = e.target.closest('.method-card');
+        if (!card) return;
+        [].forEach.call(this.querySelectorAll('.method-card'), function (c) {
+          c.classList.remove('selected');
+        });
+        card.classList.add('selected');
+        selectedMethod = card.dataset.method;
+      });
+    })
+    .catch(function (e) {
+      $('datasetSelect').innerHTML = '<option value="">加载失败</option>';
+      $('emptyArea').innerHTML = '<div class="alert alert-warn">数据加载失败：' + e.message +
+        '<br>请在项目根目录运行 <code>python web/build_web_data.py</code> 后重启服务。</div>';
+    });
+
+  function dsByName(name) {
+    return (INDEX.datasets || []).filter(function (d) { return d.name === name; })[0];
+  }
+
+  // ── 数据集切换 ────────────────────────────────────────
+  $('datasetSelect').addEventListener('change', function () {
+    var d = dsByName(this.value);
+    var multi = d && d.slices.length > 1;
+    show('sliceGroup', multi);
+    if (multi) {
+      $('sliceSelect').innerHTML = '<option value="">— 请选择切片 —</option>' +
+        d.slices.map(function (s) {
+          return '<option value="' + s.id + '"' + (s.available ? '' : ' disabled') + '>' +
+            s.label + (s.available ? '' : '（无结果）') + '</option>';
+        }).join('');
+    } else {
+      $('sliceSelect').value = '';
+    }
+    $('datasetInfo').innerHTML = d ? (
+      '<div class="viz-meta" style="margin-top:12px;margin-bottom:0;">' +
+      '<div>平台<b>' + d.platform + '</b></div>' +
+      '<div>组织<b>' + d.organ + '</b></div>' +
+      '<div>物种<b>' + d.species + '</b></div>' +
+      '<div>基因数<b>' + S.fmtInt(d.n_genes) + '</b></div>' +
+      '<div>空间域<b>' + d.n_clusters + '</b></div>' +
+      '<div>总 spot<b>' + S.fmtInt(d.total_spots) + '</b></div>' +
+      '</div>') : '';
+  });
+
+  // ── 提交 ──────────────────────────────────────────────
+  $('submitBtn').addEventListener('click', function () {
+    var ds = $('datasetSelect').value;
+    if (!ds) { alert('请选择数据集'); return; }
+    var d = dsByName(ds);
+    var multi = d.slices.length > 1;
+    var section = multi ? $('sliceSelect').value : '';
+    if (multi && !section) { alert('请选择切片'); return; }
+
+    show('emptyArea', false); show('resultArea', false); show('loadingArea', true);
+    $('loadingText').textContent = '正在加载 ' + ds + (section ? '/' + section : '') +
+      ' — ' + selectedMethod + ' 的结果…';
+
+    var isOurs = selectedMethod === 'SFM-MA';
+    var jobs = [S.api('/api/metrics?dataset=' + ds + '&section=' + section)];
+    if (isOurs) {
+      jobs.push(S.api('/api/visualize/' + ds + '?section=' + section).catch(function () { return null; }));
+    }
+
+    Promise.all(jobs).then(function (r) {
+      var metricRow = (r[0] || [])[0] || null;
+      var viz = isOurs ? r[1] : null;
+      var metrics = isOurs ? metricRow : baselineMetrics(ds, section, selectedMethod);
+
+      current = {
+        dataset: ds, section: section, method: selectedMethod,
+        adapter: $('adapterSelect').value,
+        label_rate: parseFloat($('labelRateSelect').value),
+        metrics: metrics, dataset_meta: metricRow, viz: viz
+      };
+      render(current);
+
+      S.post('/api/tasks', {
+        dataset: ds, slice: section, method: selectedMethod,
+        ari: metrics && metrics.ari, nmi: metrics && metrics.nmi,
+        status: 'completed'
+      }).catch(function () { /* 任务记录失败不影响主流程 */ });
+    }).catch(function (e) {
+      show('loadingArea', false); show('emptyArea', true);
+      alert('加载失败: ' + e.message);
+    });
+  });
+
+  /** 基线方法的指标：DLPFC 走逐切片表，单切片数据集走汇总表 */
+  function baselineMetrics(ds, section, method) {
+    var per = BASELINES.dlpfc_per_slice[method];
+    if (ds === 'DLPFC' && per && per[section]) {
+      return { ari: per[section][0], nmi: per[section][1], sc: null, db: null };
+    }
+    var one = BASELINES.single_dataset[ds];
+    if (one && one[method] !== undefined) {
+      return { ari: one[method], nmi: null, sc: null, db: null };
+    }
+    return null;
+  }
+
+  // ── 渲染 ──────────────────────────────────────────────
+  function render(res) {
+    show('loadingArea', false); show('resultArea', true);
+    var isOurs = res.method === 'SFM-MA';
+    var m = res.metrics || {};
+    var title = res.dataset + (res.section ? ' / ' + res.section : '');
+    $('resultTitle').textContent = title + ' — ' + res.method;
+
+    $('ariValue').textContent = S.fmt(m.ari);
+    $('nmiValue').textContent = S.fmt(m.nmi);
+    $('scValue').textContent = S.fmt(m.sc);
+    $('dbValue').textContent = S.fmt(m.db);
+
+    $('metricNote').innerHTML = isOurs
+      ? '<div class="alert alert-info" style="font-size:12px;">本页指标为该切片<b>单次完整推理</b>的结果。' +
+        '论文与汇总表中的数值是 <b>10 个固定种子的均值 ± 标准差</b>，两者会有小幅差异，' +
+        '统计口径的完整结果见 <a href="experiments.html">实验结果</a> 页。</div>'
+      : '<div class="alert alert-warn" style="font-size:12px;">' + res.method +
+        ' 的数值取自该方法原文在相同切片上的报告值，仅用于横向对照，' +
+        '不含本平台重跑的空间图与嵌入。</div>';
+
+    renderCompare(res);
+
+    var hasViz = isOurs && res.viz && res.viz.x && res.viz.x.length;
+    show('spatialSection', !!hasViz);
+    show('embeddingSection', !!(hasViz && res.viz.emb_x));
+
+    if (hasViz) {
+      var v = res.viz;
+      $('vizMeta').innerHTML =
+        '<div>总 spot 数<b>' + S.fmtInt(v.n_spots) + '</b></div>' +
+        '<div>图中展示<b>' + S.fmtInt(v.n_shown) + '</b></div>' +
+        '<div>预测空间域<b>' + new Set(v.domain).size + '</b></div>' +
+        '<div>真实标注类别<b>' + (v.true_label.length ? new Set(v.true_label).size : '—') + '</b></div>';
+
+      // 空间图 y 轴反向：组织切片按图像坐标系显示才和原图一致
+      S.scatterByCategory('spatialPredChart', '预测结果', v.x, v.y, v.domain,
+        { symbolSize: 3.5, invertY: true });
+
+      if (v.true_label && v.true_label.length) {
+        S.scatterByCategory('spatialGTChart', '真实标注', v.x, v.y, v.true_label,
+          { symbolSize: 3.5, invertY: true });
+      } else {
+        S.chart('spatialGTChart', {
+          title: {
+            text: '该数据集无真实标注', left: 'center', top: 'middle',
+            textStyle: { fontSize: 13, color: S.C.gray, fontWeight: 400 }
+          }
+        });
+      }
+
+      if (v.emb_x) {
+        S.scatterByCategory('embeddingChart', '', v.emb_x, v.emb_y, v.domain, { symbolSize: 4 });
+        var r = v.emb_var_ratio || [0, 0];
+        $('embNote').innerHTML = '按预测空间域着色。PC1 解释方差 <b>' +
+          (r[0] * 100).toFixed(1) + '%</b>，PC2 <b>' + (r[1] * 100).toFixed(1) +
+          '%</b>，合计 <b>' + ((r[0] + r[1]) * 100).toFixed(1) +
+          '%</b>。同一空间域的 spot 在嵌入空间聚成簇，说明表示学习已把空间结构编码进嵌入。';
+      }
+    }
+
+    window.scrollTo({ top: $('resultArea').offsetTop - 100, behavior: 'smooth' });
+  }
+
+  /** 当前切片上各方法的 ARI 对比（没有该切片数值的方法不画，避免用平均值冒充） */
+  function renderCompare(res) {
+    var names = [], vals = [];
+    BASELINES.methods.forEach(function (mth) {
+      var mm = mth === 'SFM-MA'
+        ? (res.dataset_meta || {})
+        : baselineMetrics(res.dataset, res.section, mth);
+      if (mm && mm.ari != null) { names.push(mth); vals.push(mm.ari); }
+    });
+
+    if (!names.length) {
+      $('methodComparisonChart').innerHTML =
+        '<p class="text-muted" style="font-size:12px;">该切片暂无可对比的基线数值。</p>';
+      $('compareNote').textContent = '';
+      return;
+    }
+
+    var order = names.map(function (n, i) { return [n, vals[i]]; })
+      .sort(function (a, b) { return b[1] - a[1]; });
+    S.barCompare('methodComparisonChart',
+      order.map(function (o) { return o[0]; }),
+      order.map(function (o) { return o[1]; }),
+      { highlight: 'SFM-MA', xName: 'ARI', max: Math.min(1, Math.max.apply(null, vals) + 0.12) });
+
+    var rank = order.findIndex(function (o) { return o[0] === 'SFM-MA'; });
+    $('compareNote').innerHTML = rank >= 0
+      ? 'SFM-MA 在该切片上排名 <b>第 ' + (rank + 1) + ' / ' + order.length + '</b>。' +
+        '缺少该切片公开数值的方法未列出。'
+      : '仅显示有该切片公开数值的方法。';
+  }
+
+  // ── 导出 / 重置 ───────────────────────────────────────
+  $('exportBtn').addEventListener('click', function () {
+    if (!current) return;
+    var out = {
+      dataset: current.dataset, slice: current.section, method: current.method,
+      adapter: current.adapter, label_rate: current.label_rate,
+      metrics: current.metrics,
+      n_spots: current.viz ? current.viz.n_spots : null,
+      exported_at: new Date().toISOString()
+    };
+    var url = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)],
+      { type: 'application/json' }));
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'SFM-MA_' + current.dataset + (current.section ? '_' + current.section : '') + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $('resetBtn').addEventListener('click', function () {
+    show('resultArea', false); show('emptyArea', true);
+    current = null;
+  });
+})();
+</script>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>SFM-MA</h4>
+      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>
