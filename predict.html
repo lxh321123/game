@@ -225,7 +225,7 @@
     .catch(function (e) {
       $('datasetSelect').innerHTML = '<option value="">加载失败</option>';
       $('emptyArea').innerHTML = '<div class="alert alert-warn">数据加载失败：' + e.message +
-        '<br>请在项目根目录运行 <code>python web/build_web_data.py</code> 后重启服务。</div>';
+        '<br>请刷新页面重试；若持续出现，请联系维护团队。</div>';
     });
 
   function dsByName(name) {
@@ -362,12 +362,10 @@
         '统计口径的完整结果见 <a href="experiments.html">实验结果</a> 页。</div>'
       : (ranOnPlatform
         ? '<div class="alert alert-info" style="font-size:12px;">' + res.method +
-          ' 的空间图与嵌入图由本平台在<b>同一份输入数据</b>上重跑得到（脚本：<code>baseline/' +
-          res.method + '/run.py</code>）。若该次运行未记录某项指标，则用该方法原文在相同切片上的报告值补全。</div>'
+          ' 的空间图与嵌入图由本平台在<b>同一份输入数据</b>上重跑得到；若该次运行未记录某项指标，则以原文报告值补全。</div>'
         : '<div class="alert alert-warn" style="font-size:12px;">' + res.method +
-          ' 的数值取自该方法原文在相同切片上的报告值，仅用于横向对照。' +
-          '本平台尚未重跑该方法，因此没有空间图与嵌入图 —— ' +
-          '运行 <code>baseline/' + res.method + '/run.py</code> 后重新生成前端数据即可显示。</div>');
+          ' 的指标取自其原文在相同切片上的报告值，用于横向对照。该方法暂未在本平台运行此数据集，' +
+          '因此没有它的空间图与嵌入图 —— 切换到带有可视化结果的方法（如 SFM-MA）即可查看图形对比。</div>');
 
     renderCompare(res);
 

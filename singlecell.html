@@ -250,8 +250,8 @@
       renderViz(rows[0].name);
     }
   }).catch(function (e) {
-    $('scrnaKpis').innerHTML = '<div class="alert alert-warn">SaDGAE 数据加载失败：' + e.message +
-      '<br>请运行 <code>python web/build_sadgae_data.py</code>。</div>';
+    $('scrnaKpis').innerHTML = '<div class="alert alert-warn">单细胞数据加载失败：' + e.message +
+      '<br>请刷新页面重试；若持续出现，请联系维护团队。</div>';
     $('scrnaSelect').innerHTML = '<option value="">加载失败</option>';
   });
 
