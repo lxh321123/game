@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="osmFISH dataset icon">
+  <rect width="96" height="96" rx="24" fill="#0f1b2a"/>
+  <circle cx="43" cy="43" r="22" fill="#263d63" stroke="#8ee6ff" stroke-width="5"/>
+  <circle cx="43" cy="43" r="8" fill="#8ee6ff"/>
+  <path d="M59 59l17 17" stroke="#f8c35c" stroke-width="8" stroke-linecap="round"/>
+  <path d="M27 36c8-6 20-6 29 0" fill="none" stroke="#d5fbff" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>联系我们 — SFM-MA — Spatial Foundation Model</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<title>联系我们 — SFM-MA — Unified Graph Omics System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
 <link rel="stylesheet" href="static/css/style.css">
 <script src="static/js/echarts.min.js"></script>
 <script>window.SFM_STATIC={base:"static/"};</script>
 <script src="static/js/app.js"></script>
+<script src="static/js/assistant.js"></script>
 
 </head>
 <body>
@@ -18,32 +19,35 @@
   <div class="navbar-inner">
     <a href="index.html" class="navbar-logo">
       <span class="logo-icon">S</span>
-      SFM-MA
+      CellSpace
     </a>
     <div class="navbar-links" id="navLinks">
       <a href="index.html" class="nav-link ">
-        <span class="nav-icon">🏠</span>首页
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
       </a>
       <a href="predict.html" class="nav-link ">
-        <span class="nav-icon">🔬</span>预测
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>预测
+      </a>
+      <a href="singlecell.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
       </a>
       <a href="experiments.html" class="nav-link ">
-        <span class="nav-icon">📊</span>实验结果
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>实验结果
       </a>
       <a href="tasks.html" class="nav-link ">
-        <span class="nav-icon">📋</span>任务列表
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
       </a>
       <a href="download.html" class="nav-link ">
-        <span class="nav-icon">⬇️</span>下载
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg></span>下载
       </a>
       <a href="references.html" class="nav-link ">
-        <span class="nav-icon">📄</span>参考文献
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>参考文献
       </a>
       <a href="guide.html" class="nav-link ">
-        <span class="nav-icon">📖</span>用户指南
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>用户指南
       </a>
       <a href="contact.html" class="nav-link active">
-        <span class="nav-icon">📞</span>联系我们
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>联系我们
       </a>
     </div>
     <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
@@ -54,19 +58,19 @@
 <section class="page-content" style="padding-top: 32px;">
 <div class="page-content-inner">
   <div class="breadcrumb">
-    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">联系我们</span>
+    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">联系我们</span>
   </div>
   <div class="page-header">
-    <h1>📞 联系我们</h1>
+    <h1><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg>联系我们</h1>
     <p>如有问题或建议，欢迎联系团队。</p>
   </div>
 
   <div class="grid-2">
     <div class="form-section">
-      <h3>👥 团队成员</h3>
+      <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><circle cx="8" cy="8" r="3.5"/><path d="M2 20c0-3 2.5-4.5 6-4.5S14 17 14 20"/><path d="M16 5a3.5 3.5 0 0 1 0 7"/><path d="M17 15.5c1.8.5 3.5 1.8 3.5 4.5"/></svg>团队成员</h3>
       <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
         <div class="card" style="display: flex; align-items: center; gap: 16px; padding: 16px 20px;">
-          <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-100); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">👨‍💻</div>
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-100); color: var(--primary-600); display: flex; align-items: center; justify-content: center; flex-shrink: 0;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-5 7-5s7 1.5 7 5"/></svg></div>
           <div>
             <h4 style="font-size: 15px; font-weight: 600;">项目负责人</h4>
             <p style="font-size: 13px; color: var(--gray-500);">算法设计、模型实现、实验评估</p>
@@ -77,11 +81,11 @@
     </div>
 
     <div class="form-section">
-      <h3>💬 反馈与支持</h3>
+      <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M21 12a8 8 0 0 1-11 7.5L4 21l1.5-6A8 8 0 1 1 21 12z"/></svg>反馈与支持</h3>
       <div style="margin-top: 16px;">
         <div style="margin-bottom: 16px;">
           <a href="https://github.com/lxh321123/SFM-MA" target="_blank" class="btn btn-outline" style="width:100%; justify-content: center; margin-bottom: 8px;">
-            💻 GitHub 仓库
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 19c-4 1.5-4-2.5-6-3m12-4c0-2 2-3 2-4 0-1 .5-2 1-2m-5 6a2 2 0 0 1-4 0m-7-2C5 3 7 2 9 2c4 0 8 5 8 8 0 5-4 6-6 6"/></svg>GitHub 仓库
           </a>
           <p style="font-size: 12px; color: var(--gray-400); text-align: center;">欢迎提交 Issue 和 Pull Request</p>
         </div>
@@ -89,13 +93,13 @@
           <label>快速反馈</label>
           <textarea class="form-control" rows="4" placeholder="描述您的问题或建议..."></textarea>
         </div>
-        <button class="btn btn-primary" style="width:100%;" onclick="alert('反馈已发送，感谢您的支持！')">📨 发送反馈</button>
+        <button class="btn btn-primary" style="width:100%;" onclick="alert('反馈已发送，感谢您的支持！')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>发送反馈</button>
       </div>
     </div>
   </div>
 
   <div class="form-section" style="text-align: center; margin-top: 24px;">
-    <h3>📝 引用我们</h3>
+    <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M6 4h12v16l-3-2-3 2-3-2-3 2z"/><path d="M9 9h6M9 13h6"/></svg>引用我们</h3>
     <p style="font-size: 13px; color: var(--gray-500); margin-top: 8px;">
       如果您在研究中使用了 SFM-MA，请引用我们的论文：
     </p>
@@ -116,12 +120,13 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <h4>SFM-MA</h4>
-      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+      <h4>CellSpace-Bridge</h4>
+      <p>融合 SaDGAE 与 SFM-MA 的统一图表示学习系统，面向单细胞聚类与空间转录组空间域识别。</p>
     </div>
     <div class="footer-col">
       <h5>平台</h5>
       <a href="predict.html">在线预测</a>
+      <a href="singlecell.html">单细胞聚类</a>
       <a href="experiments.html">实验结果</a>
       <a href="tasks.html">任务列表</a>
       <a href="download.html">下载中心</a>
@@ -139,7 +144,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+    © 2026 CellSpace-Bridge Team. Licensed under MIT. Free for academic use.
   </div>
 </footer>
 

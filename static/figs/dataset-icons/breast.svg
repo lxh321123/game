@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Breast cancer dataset icon">
+  <rect width="96" height="96" rx="24" fill="#17172d"/>
+  <path d="M34 73c-10-8-16-18-16-31 0-12 8-21 18-21 6 0 10 3 12 7 2-4 6-7 12-7 10 0 18 9 18 21 0 13-6 23-16 31-5 4-10 6-14 6s-9-2-14-6Z" fill="#ff8fc6"/>
+  <path d="M48 30c-4 9-4 26 0 43M31 47c7-3 13-3 18 1M66 47c-7-3-13-3-18 1" fill="none" stroke="#fff5fb" stroke-width="3.4" stroke-linecap="round"/>
+  <circle cx="66" cy="35" r="8" fill="#ffcf5a"/>
+  <path d="M66 27v16M58 35h16" stroke="#3b2554" stroke-width="3" stroke-linecap="round"/>
+</svg>

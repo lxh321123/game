@@ -1,0 +1,212 @@
+{
+  "summary": {
+    "n_datasets": 9,
+    "total_cells": 13205,
+    "avg_ari": 0.85654,
+    "avg_nmi": 0.83372,
+    "best_dataset": "Quake_Smart-seq2_Diaphragm",
+    "model_ready": 9,
+    "raw_data_ready": 0,
+    "visualization": "preview_layout"
+  },
+  "datasets": [
+    {
+      "name": "Muraro",
+      "label": "Muraro pancreas",
+      "platform": "CEL-seq2",
+      "organ": "Pancreas",
+      "species": "Human",
+      "n_cells": 2122,
+      "n_genes": 19046,
+      "hvg": 1500,
+      "n_clusters": 9,
+      "neighbors": 9,
+      "ari": 0.91461,
+      "nmi": 0.87295,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Pollen",
+      "label": "Pollen cell types",
+      "platform": "SMARTer",
+      "organ": "Mixed tissues",
+      "species": "Human",
+      "n_cells": 301,
+      "n_genes": 21721,
+      "hvg": 1000,
+      "n_clusters": 11,
+      "neighbors": 12,
+      "ari": 0.96102,
+      "nmi": 0.95711,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Quake_10x_Bladder",
+      "label": "Quake 10x bladder",
+      "platform": "10x Genomics",
+      "organ": "Bladder",
+      "species": "Mouse",
+      "n_cells": 2500,
+      "n_genes": 23341,
+      "hvg": 1500,
+      "n_clusters": 4,
+      "neighbors": 13,
+      "ari": 0.80776,
+      "nmi": 0.81049,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Quake_Smart-seq2_Diaphragm",
+      "label": "Quake Smart-seq2 diaphragm",
+      "platform": "Smart-seq2",
+      "organ": "Diaphragm",
+      "species": "Mouse",
+      "n_cells": 870,
+      "n_genes": 23341,
+      "hvg": 1000,
+      "n_clusters": 5,
+      "neighbors": 6,
+      "ari": 0.98723,
+      "nmi": 0.97337,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Romanov",
+      "label": "Romanov hypothalamus",
+      "platform": "Drop-seq",
+      "organ": "Hypothalamus",
+      "species": "Mouse",
+      "n_cells": 2881,
+      "n_genes": 21143,
+      "hvg": 500,
+      "n_clusters": 7,
+      "neighbors": 5,
+      "ari": 0.59829,
+      "nmi": 0.57077,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Klein",
+      "label": "Klein embryonic stem cells",
+      "platform": "inDrop",
+      "organ": "Embryonic stem cells",
+      "species": "Mouse",
+      "n_cells": 2717,
+      "n_genes": 24047,
+      "hvg": 1500,
+      "n_clusters": 4,
+      "neighbors": 15,
+      "ari": 0.93346,
+      "nmi": 0.90043,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "goolam",
+      "label": "Goolam embryo",
+      "platform": "Smart-seq2",
+      "organ": "Embryo",
+      "species": "Mouse",
+      "n_cells": 124,
+      "n_genes": null,
+      "hvg": 1500,
+      "n_clusters": 5,
+      "neighbors": 13,
+      "ari": 0.78953,
+      "nmi": 0.80366,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Yan",
+      "label": "Yan human embryo",
+      "platform": "Smart-seq",
+      "organ": "Embryo",
+      "species": "Human",
+      "n_cells": 90,
+      "n_genes": null,
+      "hvg": 1500,
+      "n_clusters": 6,
+      "neighbors": 5,
+      "ari": 0.90776,
+      "nmi": 0.93123,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    },
+    {
+      "name": "Xin",
+      "label": "Xin pancreatic islets",
+      "platform": "SMARTer",
+      "organ": "Pancreatic islets",
+      "species": "Human",
+      "n_cells": 1600,
+      "n_genes": null,
+      "hvg": 1500,
+      "n_clusters": 4,
+      "neighbors": 13,
+      "ari": 0.80917,
+      "nmi": 0.68349,
+      "model_files": {
+        "ae": true,
+        "gnn": true,
+        "pretrain": true,
+        "final": true
+      },
+      "data_available": false,
+      "source": "SaDGAE-master/log.txt formal train"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="MFC dataset icon">
+  <rect width="96" height="96" rx="24" fill="#15182c"/>
+  <path d="M34 18c30 13 30 47 0 60M62 18c-30 13-30 47 0 60" fill="none" stroke="#76e4ff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M38 28h20M32 41h32M32 55h32M38 69h20" stroke="#ffd166" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="35" cy="18" r="4" fill="#c8f7ff"/>
+  <circle cx="61" cy="78" r="4" fill="#c8f7ff"/>
+</svg>

@@ -6,17 +6,17 @@
 (function (global) {
   'use strict';
 
-  // ── 设计令牌（与 style.css 的调色板保持一致） ──────────────
+  // ── 设计令牌（与 style.css 的调色板保持一致 —— Notion 暖中性 + 蓝） ──
   var PALETTE = [
-    '#7C3AED', '#F59E0B', '#10B981', '#EF4444', '#3B82F6',
-    '#EC4899', '#14B8A6', '#F97316', '#8B5CF6', '#06B6D4',
-    '#84CC16', '#A855F7', '#0EA5E9', '#F43F5E', '#22C55E',
-    '#EAB308', '#6366F1', '#D946EF', '#059669', '#DC2626'
+    '#0075de', '#2a9d99', '#dd5b00', '#c23b32', '#6b3fa0',
+    '#1a716e', '#b34a00', '#0e7a2b', '#c62963', '#523410',
+    '#3f9db5', '#4568a6', '#e07a3f', '#9c5568', '#03808f',
+    '#0a68c4', '#6b6b6b', '#c98a2d', '#7f5fae', '#a83a61'
   ];
   var C = {
-    primary: '#7C3AED', primaryLight: '#C4B5FD', primarySoft: '#EDE9FE',
-    gray: '#9CA3AF', grayLine: '#E5E7EB', text: '#374151', textSoft: '#6B7280',
-    pos: '#10B981', neg: '#EF4444', warn: '#F59E0B'
+    primary: '#42b8f4', primaryLight: '#75d7ff', primarySoft: 'rgba(77,186,255,0.13)',
+    gray: '#7d8aa3', grayLine: 'rgba(190,223,255,0.16)', text: '#eff6ff', textSoft: '#9aa8c1',
+    pos: '#5ce0bf', neg: '#ff6f91', warn: '#f7b955'
   };
 
   var FONT = "Inter, -apple-system, 'Microsoft YaHei', sans-serif";
@@ -47,8 +47,7 @@
     '/api/summary': 'data/summary.json',
     '/api/datasets': 'data/index.json',
     '/api/baselines': 'data/baselines.json',
-    '/api/transfer': 'data/transfer.json',
-    '/api/paradigm': 'data/paradigm.json',
+    '/api/scrna/datasets': 'data/scrna_index.json',
     '/api/downloads': 'data/downloads.json',
     '/api/metrics': 'data/metrics.json'
   };
@@ -60,7 +59,12 @@
     if (base.indexOf('/api/visualize/') === 0) {
       var ds = base.slice('/api/visualize/'.length);
       var sl = q.section || q.idx || '_single';
-      return { url: STATIC.base + 'viz_data/' + ds + '/' + sl + '/viz.json' };
+      var m = q.method && q.method !== 'SFM-MA' ? q.method + '/' : '';
+      return { url: STATIC.base + 'viz_data/' + ds + '/' + sl + '/' + m + 'viz.json' };
+    }
+    if (base.indexOf('/api/scrna/visualize/') === 0) {
+      var scds = base.slice('/api/scrna/visualize/'.length);
+      return { url: STATIC.base + 'scrna_viz/' + scds + '/viz.json' };
     }
     if (base === '/api/metrics') {
       return {
@@ -162,7 +166,7 @@
     return Number(v).toLocaleString('en-US');
   }
 
-  /** 迁移分类 → 语义色，PT 绿 / ET 橙 / UI 红 */
+  /** 结果分类 → 语义色 */
   function catClass(cat) {
     if (!cat) return 'cat-na';
     if (cat.indexOf('PT') === 0) return 'cat-pt';
@@ -192,14 +196,25 @@
   function chart(id, option) {
     var el = document.getElementById(id);
     if (!el || !global.echarts) return null;
-    if (_charts[id]) _charts[id].dispose();
-    var c = global.echarts.init(el);
-    c.setOption(option);
+    disposeChart(id);
+    var c;
+    try {
+      c = global.echarts.init(el);
+      c.setOption(option);
+    } catch (e) {
+      // init/setOption 半途失败时把半成品实例清干净，避免残留僵尸实例
+      try { if (c) c.dispose(); } catch (_e) { /* 忽略 */ }
+      try { el.removeAttribute('_echarts_instance_'); } catch (_e) { /* 忽略 */ }
+      throw e;
+    }
     _charts[id] = c;
 
     if (!_observed[id] && global.ResizeObserver) {
       var ro = new ResizeObserver(function () {
-        if (_charts[id]) _charts[id].resize();
+        var cur = _charts[id];
+        if (cur && !cur.isDisposed()) {
+          try { cur.resize(); } catch (e) { /* 容器已脱离文档时忽略 */ }
+        }
       });
       ro.observe(el);
       _observed[id] = ro;
@@ -211,15 +226,36 @@
     [0, 150, 500].forEach(function (ms) {
       setTimeout(function () {
         var cur = _charts[id];
-        if (cur && el.clientWidth && cur.getWidth() !== el.clientWidth) cur.resize();
+        if (cur && !cur.isDisposed() && el.clientWidth &&
+            cur.getWidth() !== el.clientWidth) {
+          try { cur.resize(); } catch (e) { /* 忽略 */ }
+        }
       }, ms);
     });
     return c;
   }
 
+  /**
+   * 显式销毁容器上的图表实例。
+   * 必须在用 innerHTML 覆盖图表容器内容之前调用：直接清 DOM 会把 ECharts
+   * 的内部节点一并拔掉，实例还在但内部引用为 null，随后 dispose 就会抛
+   * "Cannot read properties of null (reading 'removeChild')"。
+   */
+  function disposeChart(id) {
+    var cur = _charts[id];
+    delete _charts[id];
+    if (cur) {
+      try { cur.dispose(); } catch (e) { /* 已损坏的实例 dispose 也可能抛错 */ }
+    }
+    var el = document.getElementById(id);
+    if (el) {
+      try { el.removeAttribute('_echarts_instance_'); } catch (e) { /* 忽略 */ }
+    }
+  }
+
   global.addEventListener('resize', function () {
     Object.keys(_charts).forEach(function (k) {
-      if (_charts[k]) _charts[k].resize();
+      if (_charts[k] && !_charts[k].isDisposed()) _charts[k].resize();
     });
   });
 
@@ -237,12 +273,55 @@
 
   function tooltipStyle(extra) {
     return Object.assign({
-      backgroundColor: 'rgba(255,255,255,0.97)',
-      borderColor: C.grayLine, borderWidth: 1,
+      backgroundColor: 'rgba(7,16,31,0.96)',
+      borderColor: 'rgba(125,213,255,0.24)', borderWidth: 1,
       padding: [8, 12],
-      textStyle: { color: C.text, fontSize: 12, fontFamily: FONT },
-      extraCssText: 'box-shadow:0 4px 16px rgba(0,0,0,.10);border-radius:8px;'
+      textStyle: { color: '#eff6ff', fontSize: 12, fontFamily: FONT },
+      extraCssText: 'box-shadow:0 14px 38px rgba(0,0,0,0.35);border-radius:8px;backdrop-filter:blur(10px);'
     }, extra || {});
+  }
+
+  function paddedExtent(vals, padRatio) {
+    var min = Infinity, max = -Infinity;
+    for (var i = 0; i < vals.length; i++) {
+      var v = Number(vals[i]);
+      if (!isFinite(v)) continue;
+      if (v < min) min = v;
+      if (v > max) max = v;
+    }
+    if (!isFinite(min) || !isFinite(max)) return null;
+    if (min === max) {
+      min -= 1;
+      max += 1;
+    }
+    var pad = (max - min) * (padRatio == null ? 0.06 : padRatio);
+    return [min - pad, max + pad];
+  }
+
+  function equalAspectExtents(id, xs, ys, grid) {
+    var xr = paddedExtent(xs, 0.08);
+    var yr = paddedExtent(ys, 0.08);
+    if (!xr || !yr) return { x: xr, y: yr };
+
+    var el = document.getElementById(id);
+    var rect = el ? el.getBoundingClientRect() : { width: 1, height: 1 };
+    var plotW = Math.max(1, rect.width - (grid.left || 0) - (grid.right || 0));
+    var plotH = Math.max(1, rect.height - (grid.top || 0) - (grid.bottom || 0));
+    var plotRatio = plotW / plotH;
+    var xRange = xr[1] - xr[0];
+    var yRange = yr[1] - yr[0];
+    var dataRatio = xRange / yRange;
+
+    if (dataRatio > plotRatio) {
+      var targetY = xRange / plotRatio;
+      var yMid = (yr[0] + yr[1]) / 2;
+      yr = [yMid - targetY / 2, yMid + targetY / 2];
+    } else {
+      var targetX = yRange * plotRatio;
+      var xMid = (xr[0] + xr[1]) / 2;
+      xr = [xMid - targetX / 2, xMid + targetX / 2];
+    }
+    return { x: xr, y: yr };
   }
 
   /**
@@ -274,6 +353,15 @@
       };
     });
 
+    var isEmbedding = !!opts.embedding;
+    var grid = isEmbedding
+      ? { left: 54, right: 20, top: title ? 34 : 24, bottom: 50 }
+      : { left: 8, right: 8, top: title ? 28 : 8, bottom: 30 };
+    var ext = opts.equalAspect ? equalAspectExtents(id, xs, ys, grid) : {};
+    var axisText = isEmbedding ? '#9aa8c1' : C.textSoft;
+    var axisLine = isEmbedding ? 'rgba(190,223,255,0.20)' : C.grayLine;
+    var splitLine = isEmbedding ? 'rgba(190,223,255,0.09)' : C.grayLine;
+
     return chart(id, {
       title: title ? {
         text: title, left: 'center', top: 2,
@@ -289,9 +377,30 @@
         type: 'scroll', bottom: 0, itemWidth: 9, itemHeight: 9,
         textStyle: { fontSize: 10, color: C.textSoft }, data: uniq.map(String)
       },
-      grid: { left: 8, right: 8, top: title ? 28 : 8, bottom: 30 },
-      xAxis: { show: false, scale: true },
-      yAxis: { show: false, scale: true, inverse: !!opts.invertY },
+      grid: grid,
+      xAxis: {
+        show: isEmbedding, scale: true, min: ext.x && ext.x[0], max: ext.x && ext.x[1],
+        name: isEmbedding ? 'PC1' : undefined, nameLocation: 'middle', nameGap: 24,
+        axisLine: { lineStyle: { color: axisLine } },
+        axisTick: { show: isEmbedding, lineStyle: { color: axisLine } },
+        axisLabel: {
+          color: axisText, fontSize: 10, hideOverlap: true,
+          formatter: function (v) { return Number(v).toFixed(1); }
+        },
+        splitLine: { show: isEmbedding, lineStyle: { color: splitLine, type: 'dashed' } }
+      },
+      yAxis: {
+        show: isEmbedding, scale: true, inverse: !!opts.invertY,
+        min: ext.y && ext.y[0], max: ext.y && ext.y[1],
+        name: isEmbedding ? 'PC2' : undefined, nameLocation: 'middle', nameGap: 28,
+        axisLine: { lineStyle: { color: axisLine } },
+        axisTick: { show: isEmbedding, lineStyle: { color: axisLine } },
+        axisLabel: {
+          color: axisText, fontSize: 10, hideOverlap: true,
+          formatter: function (v) { return Number(v).toFixed(1); }
+        },
+        splitLine: { show: isEmbedding, lineStyle: { color: splitLine, type: 'dashed' } }
+      },
       series: series,
       animation: false
     });
@@ -332,7 +441,7 @@
     api: api, post: post,
     fmt: fmt, fmtDelta: fmtDelta, fmtP: fmtP, fmtInt: fmtInt,
     catClass: catClass, deltaClass: deltaClass,
-    chart: chart, charts: _charts,
+    chart: chart, charts: _charts, disposeChart: disposeChart,
     axisStyle: axisStyle, tooltipStyle: tooltipStyle, baseGrid: baseGrid,
     scatterByCategory: scatterByCategory, barCompare: barCompare
   });

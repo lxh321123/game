@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="MERFISH dataset icon">
+  <rect width="96" height="96" rx="24" fill="#0b2025"/>
+  <path d="M35 15h26v10l-8 12v29a18 18 0 1 1-10 0V37L35 25V15Z" fill="#5be7d5"/>
+  <path d="M36 58h24" stroke="#09202b" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="43" cy="67" r="3" fill="#09202b"/>
+  <circle cx="54" cy="61" r="3" fill="#09202b"/>
+  <circle cx="51" cy="73" r="2.6" fill="#09202b"/>
+  <path d="M32 82c11 5 22 5 33 0" fill="none" stroke="#bdfbf3" stroke-width="3" stroke-linecap="round"/>
+</svg>

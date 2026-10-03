@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" role="img" aria-labelledby="title desc">
+  <title id="title">SaDGAE single-cell clustering framework</title>
+  <desc id="desc">A code-aligned schematic of the SaDGAE single-cell branch.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef6ff"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" x2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ccfbf1"/>
+      <stop offset="100%" stop-color="#99f6e4"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ffedd5"/>
+      <stop offset="100%" stop-color="#fed7aa"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="100%" stop-color="#ddd6fe"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#1f2937" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <style>
+      .panel{fill:#fff;stroke:#cbd5e1;stroke-width:3;rx:24}
+      .stage{fill:#f5f3ff;stroke:#8b5cf6;stroke-width:4;rx:10}
+      .title{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:24px;font-weight:800;fill:#111827}
+      .subtitle{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:15px;font-weight:700;fill:#334155}
+      .small{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:13px;font-weight:650;fill:#475569}
+      .tiny{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:10.5px;font-weight:650;fill:#64748b}
+      .micro{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:9.5px;font-weight:650;fill:#64748b}
+      .loss{font-family:Inter,Arial,"Microsoft YaHei",sans-serif;font-size:13px;font-weight:750;fill:#7c3aed}
+      .box{stroke-width:3;rx:12;filter:url(#shadow)}
+      .line{stroke:#334155;stroke-width:2.8;fill:none;marker-end:url(#arrow)}
+      .dash{stroke:#94a3b8;stroke-width:2.6;stroke-dasharray:7 7;fill:none;marker-end:url(#arrow)}
+      .thin{stroke:#64748b;stroke-width:2;fill:none}
+    </style>
+  </defs>
+
+  <rect x="18" y="16" width="924" height="688" rx="24" fill="url(#bg)" stroke="#cbd5e1" stroke-width="3"/>
+  <rect x="40" y="34" width="880" height="38" rx="8" class="stage"/>
+  <text x="480" y="59" text-anchor="middle" class="title" font-size="18">Stage 1  AE pretraining + adaptive graph representation</text>
+
+  <rect x="44" y="92" width="286" height="328" rx="28" class="panel"/>
+  <text x="68" y="126" class="subtitle">Input &amp; ZINB autoencoder</text>
+  <text x="68" y="151" class="tiny">scRNA-seq count matrix X</text>
+
+  <g transform="translate(70 178)">
+    <rect width="96" height="92" rx="10" fill="#dbeafe" stroke="#60a5fa" stroke-width="3"/>
+    <g fill="#93c5fd">
+      <rect x="10" y="10" width="16" height="16"/><rect x="32" y="10" width="16" height="16"/><rect x="54" y="10" width="16" height="16"/><rect x="76" y="10" width="10" height="16"/>
+      <rect x="10" y="32" width="16" height="16"/><rect x="32" y="32" width="16" height="16"/><rect x="54" y="32" width="16" height="16"/><rect x="76" y="32" width="10" height="16"/>
+      <rect x="10" y="54" width="16" height="16"/><rect x="32" y="54" width="16" height="16"/><rect x="54" y="54" width="16" height="16"/><rect x="76" y="54" width="10" height="16"/>
+      <rect x="10" y="76" width="16" height="8"/><rect x="32" y="76" width="16" height="8"/><rect x="54" y="76" width="16" height="8"/><rect x="76" y="76" width="10" height="8"/>
+    </g>
+    <text x="48" y="118" text-anchor="middle" class="tiny">Raw counts</text>
+  </g>
+
+  <path d="M178 224 H226" class="line"/>
+  <rect x="238" y="176" width="62" height="96" rx="12" fill="url(#blue)" stroke="#3b82f6" stroke-width="3"/>
+  <rect x="256" y="194" width="26" height="58" rx="5" fill="#60a5fa"/>
+  <text x="269" y="292" text-anchor="middle" class="tiny">AE encoder</text>
+  <rect x="236" y="302" width="66" height="22" rx="11" fill="#eef6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="269" y="317" text-anchor="middle" class="tiny">latent H</text>
+
+  <path d="M232 330 C190 326 166 306 154 282" class="dash"/>
+  <text x="72" y="348" class="loss">ZINB loss</text>
+  <text x="72" y="372" class="tiny">reconstruct expression distribution</text>
+
+  <rect x="374" y="92" width="246" height="328" rx="28" class="panel"/>
+  <text x="398" y="126" class="subtitle">Self-adaptive cell graph</text>
+  <text x="398" y="151" class="tiny">periodically rebuild KNN graph from H</text>
+  <path d="M304 224 H370" class="line"/>
+
+  <g transform="translate(426 188)">
+    <circle cx="42" cy="18" r="7" fill="#2563eb"/>
+    <circle cx="94" cy="28" r="7" fill="#14b8a6"/>
+    <circle cx="122" cy="78" r="7" fill="#f97316"/>
+    <circle cx="72" cy="112" r="7" fill="#ef4444"/>
+    <circle cx="20" cy="86" r="7" fill="#8b5cf6"/>
+    <path d="M42 18 L94 28 L122 78 L72 112 L20 86 L42 18 M94 28 L72 112 M42 18 L122 78" class="thin"/>
+  </g>
+  <rect x="410" y="326" width="174" height="58" rx="12" fill="url(#teal)" stroke="#14b8a6" stroke-width="3"/>
+  <text x="497" y="348" text-anchor="middle" class="small">KNN graph A</text>
+  <text x="497" y="367" text-anchor="middle" class="tiny">updated every 100 epochs</text>
+
+  <rect x="664" y="92" width="252" height="328" rx="28" class="panel"/>
+  <text x="688" y="126" class="subtitle">Graph autoencoder branch</text>
+  <text x="688" y="151" class="tiny">GNN encoder / decoder with graph losses</text>
+  <path d="M620 224 H660" class="line"/>
+
+  <rect x="690" y="176" width="72" height="88" rx="12" fill="url(#violet)" stroke="#8b5cf6" stroke-width="3"/>
+  <text x="726" y="211" text-anchor="middle" class="small">GNN</text>
+  <text x="726" y="233" text-anchor="middle" class="tiny">encoder</text>
+  <path d="M768 220 H810" class="line"/>
+  <rect x="816" y="176" width="56" height="88" rx="10" fill="#ecfeff" stroke="#06b6d4" stroke-width="3"/>
+  <text x="844" y="211" text-anchor="middle" class="small">z</text>
+  <text x="844" y="233" text-anchor="middle" class="tiny">latent</text>
+
+  <path d="M844 266 V296" class="dash"/>
+  <rect x="690" y="300" width="190" height="62" rx="12" fill="url(#orange)" stroke="#f97316" stroke-width="3"/>
+  <text x="785" y="324" text-anchor="middle" class="small">clustering loss</text>
+  <text x="785" y="343" text-anchor="middle" class="tiny">KMeans centers + q assignment</text>
+
+  <rect x="686" y="374" width="202" height="30" rx="8" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+  <text x="787" y="394" text-anchor="middle" class="micro">MSE: A_hat vs A, H_hat vs A·H</text>
+
+  <rect x="176" y="456" width="608" height="42" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="4"/>
+  <text x="480" y="483" text-anchor="middle" class="title" font-size="18">Stage 2  cell clustering adaptation</text>
+
+  <rect x="72" y="534" width="386" height="132" rx="24" class="panel"/>
+  <text x="96" y="568" class="subtitle">Output 1: cell type clustering</text>
+  <g transform="translate(112 590)">
+    <circle cx="0" cy="10" r="7" fill="#2563eb"/><circle cx="24" cy="18" r="7" fill="#2563eb"/><circle cx="50" cy="8" r="7" fill="#14b8a6"/><circle cx="74" cy="20" r="7" fill="#14b8a6"/>
+    <circle cx="120" cy="12" r="7" fill="#f97316"/><circle cx="146" cy="21" r="7" fill="#f97316"/><circle cx="190" cy="10" r="7" fill="#ef4444"/><circle cx="216" cy="22" r="7" fill="#8b5cf6"/>
+  </g>
+  <text x="96" y="634" class="tiny">predicted cluster labels for scRNA-seq cells</text>
+
+  <rect x="504" y="534" width="386" height="132" rx="24" class="panel"/>
+  <text x="528" y="568" class="subtitle">Output 2: reusable cell embedding</text>
+  <rect x="552" y="588" width="276" height="18" rx="6" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+  <rect x="552" y="616" width="276" height="18" rx="6" fill="#ccfbf1" stroke="#14b8a6" stroke-width="2"/>
+  <rect x="548" y="638" width="284" height="28" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="690" y="650" text-anchor="middle" class="micro">
+    <tspan x="690" dy="0">benchmark display</tspan>
+    <tspan x="690" dy="12">and future cross-omics alignment</tspan>
+  </text>
+
+  <path d="M497 386 V456" class="line"/>
+  <path d="M480 498 V516 H266 V532" class="line"/>
+  <path d="M480 498 V516 H724 V532" class="line"/>
+</svg>

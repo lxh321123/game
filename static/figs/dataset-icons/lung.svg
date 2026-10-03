@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Lung cancer dataset icon">
+  <rect width="96" height="96" rx="24" fill="#0c1e2e"/>
+  <path d="M48 19v22" stroke="#b8f3ff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M43 42c-16 4-23 17-23 34 0 4 3 7 7 6 13-4 18-14 18-30V42Z" fill="#7bdcff"/>
+  <path d="M53 42c16 4 23 17 23 34 0 4-3 7-7 6-13-4-18-14-18-30V42Z" fill="#63b8ff"/>
+  <path d="M39 54c-5 5-8 11-10 20M57 54c5 5 8 11 10 20" fill="none" stroke="#e8fbff" stroke-width="3" stroke-linecap="round"/>
+</svg>

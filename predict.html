@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在线预测 — SFM-MA — Spatial Foundation Model</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<title>在线预测 — SFM-MA — Unified Graph Omics System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
 <link rel="stylesheet" href="static/css/style.css">
 <script src="static/js/echarts.min.js"></script>
 <script>window.SFM_STATIC={base:"static/"};</script>
 <script src="static/js/app.js"></script>
+<script src="static/js/assistant.js"></script>
 
 </head>
 <body>
@@ -18,32 +19,35 @@
   <div class="navbar-inner">
     <a href="index.html" class="navbar-logo">
       <span class="logo-icon">S</span>
-      SFM-MA
+      CellSpace
     </a>
     <div class="navbar-links" id="navLinks">
       <a href="index.html" class="nav-link ">
-        <span class="nav-icon">🏠</span>首页
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
       </a>
       <a href="predict.html" class="nav-link active">
-        <span class="nav-icon">🔬</span>预测
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>预测
+      </a>
+      <a href="singlecell.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
       </a>
       <a href="experiments.html" class="nav-link ">
-        <span class="nav-icon">📊</span>实验结果
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>实验结果
       </a>
       <a href="tasks.html" class="nav-link ">
-        <span class="nav-icon">📋</span>任务列表
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
       </a>
       <a href="download.html" class="nav-link ">
-        <span class="nav-icon">⬇️</span>下载
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg></span>下载
       </a>
       <a href="references.html" class="nav-link ">
-        <span class="nav-icon">📄</span>参考文献
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>参考文献
       </a>
       <a href="guide.html" class="nav-link ">
-        <span class="nav-icon">📖</span>用户指南
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>用户指南
       </a>
       <a href="contact.html" class="nav-link ">
-        <span class="nav-icon">📞</span>联系我们
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>联系我们
       </a>
     </div>
     <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
@@ -56,11 +60,11 @@
 <div class="page-content-inner">
 
   <div class="breadcrumb">
-    <a href="index.html">🏠 首页</a> <span>/</span> <span style="color: var(--gray-700);">在线预测</span>
+    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">在线预测</span>
   </div>
 
   <div class="page-header">
-    <h1>🔬 空间域识别预测</h1>
+    <h1><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg>空间域识别预测</h1>
     <p>选择数据集与方法，即时查看空间域识别结果、嵌入分布与性能指标。</p>
   </div>
 
@@ -68,7 +72,7 @@
     <!-- ── 左侧：参数表单 ─────────────────────────── -->
     <div>
       <div class="form-section">
-        <h3>📦 数据集选择</h3>
+        <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5M12 12v9"/></svg>数据集选择</h3>
         <p class="form-desc">选择需要分析的空间转录组数据集和切片</p>
 
         <div class="form-group">
@@ -91,7 +95,7 @@
       </div>
 
       <div class="form-section">
-        <h3>⚙️ 方法选择</h3>
+        <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="7" cy="17" r="1.8"/></svg>方法选择</h3>
         <p class="form-desc">SFM-MA 为本框架实测结果；其余方法为同类工作的报告值，用于对照</p>
         <div class="methods-showcase"
              style="grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));"
@@ -99,40 +103,16 @@
       </div>
 
       <div class="form-section">
-        <h3>🔧 参数配置</h3>
-        <p class="form-desc">推理参数设置</p>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>适配器类型</label>
-            <select class="form-control" id="adapterSelect">
-              <option value="ce">CE（交叉熵）</option>
-              <option value="kl">KL（KL 散度）</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>标注比例</label>
-            <select class="form-control" id="labelRateSelect">
-              <option value="0.01">1%</option>
-              <option value="0.02">2%</option>
-              <option value="0.03">3%</option>
-              <option value="0.05" selected>5%（推荐）</option>
-              <option value="0.10">10%</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-tip">
-          <span class="tip-icon">💡</span>
-          <span>本页展示的是<b>已完成推理的预计算结果</b>，提交即查，不在浏览器端重新训练。
-            如需用新参数重跑，请在服务器执行
-            <code>python run_adapter.py --data_name &lt;数据集&gt; --section &lt;切片&gt;</code>，
-            再运行 <code>python web/build_web_data.py</code> 刷新本页数据。</span>
+        <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>结果说明</h3>
+        <div class="form-tip" style="margin-bottom:0;">
+          <span class="tip-icon">i</span>
+          <span>本页展示<b>预计算的分析结果</b>，选择数据集与方法后即时呈现。
+            结果统一采用 <b>5% 标注 + CE 适配器</b>，与论文主实验口径一致。</span>
         </div>
       </div>
 
       <button class="btn btn-primary btn-lg" style="width:100%;" id="submitBtn">
-        🚀 开始分析
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>开始分析
       </button>
     </div>
 
@@ -140,17 +120,15 @@
     <div>
       <div id="resultArea" style="display:none;">
         <div class="form-section">
-          <div class="section-title-row">
-            <h3>📊 分析结果</h3>
+          <div class="section-title-row analysis-result-head">
+            <div>
+              <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg>分析结果</h3>
+              <p id="resultSubtitle">—</p>
+            </div>
             <span class="pill pill-primary" id="resultTitle">—</span>
           </div>
 
-          <div class="stat-grid" id="metricsGrid" style="margin-bottom: 16px;">
-            <div class="stat-card"><div class="stat-value" id="ariValue">—</div><div class="stat-label">ARI</div></div>
-            <div class="stat-card"><div class="stat-value" id="nmiValue">—</div><div class="stat-label">NMI</div></div>
-            <div class="stat-card"><div class="stat-value" id="scValue">—</div><div class="stat-label">Silhouette</div></div>
-            <div class="stat-card"><div class="stat-value" id="dbValue">—</div><div class="stat-label">DBI</div></div>
-          </div>
+          <div class="stat-grid analysis-metrics-grid" id="metricsGrid"></div>
 
           <div id="metricNote"></div>
 
@@ -160,7 +138,7 @@
         </div>
 
         <div class="form-section" id="spatialSection">
-          <h3>🗺️ 空间域可视化</h3>
+          <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>空间域可视化</h3>
           <p class="form-desc">左：模型预测的空间域　右：真实标注</p>
           <div class="viz-meta" id="vizMeta"></div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -170,21 +148,21 @@
         </div>
 
         <div class="form-section" id="embeddingSection">
-          <h3>🔮 嵌入空间可视化</h3>
-          <p class="form-desc">SFM-MA 输出的 128 维 spot 嵌入，经 PCA 投影到前两个主成分</p>
+          <h3><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-2px;margin-right:6px;"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><circle cx="12" cy="12" r="2.5"/></svg>嵌入空间可视化</h3>
+          <p class="form-desc" id="embDesc">模型输出的 spot 嵌入，经 PCA 投影到前两个主成分</p>
           <div id="embeddingChart" style="height: 360px;"></div>
           <p class="chart-note" id="embNote"></p>
         </div>
 
         <div style="display: flex; gap: 12px;">
-          <button class="btn btn-outline" id="exportBtn">📥 导出结果 JSON</button>
-          <button class="btn btn-outline" id="resetBtn">🔄 重新选择</button>
+          <button class="btn btn-outline" id="exportBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12M7 11l5 5 5-5M4 21h16"/></svg>导出结果 JSON</button>
+          <button class="btn btn-outline" id="resetBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>重新选择</button>
         </div>
       </div>
 
       <div id="emptyArea">
         <div class="empty-state">
-          <div class="empty-icon">🔬</div>
+          <div class="empty-icon"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></div>
           <h3>选择数据集开始分析</h3>
           <p>在左侧选择数据集和方法，点击「开始分析」查看空间域识别结果。</p>
         </div>
@@ -208,6 +186,7 @@
   var INDEX = null, BASELINES = null;
   var selectedMethod = 'SFM-MA';
   var current = null;
+  var compareInfo = null;   // 当前切片方法对比的排名信息（供解读助手使用）
 
   var $ = function (id) { return document.getElementById(id); };
   var show = function (id, on) { $(id).style.display = on ? 'block' : 'none'; };
@@ -228,7 +207,7 @@
       $('methodGrid').innerHTML = BASELINES.methods.map(function (m, i) {
         var a = avg[m] ? avg[m].ari : null;
         return '<div class="method-card' + (i === 0 ? ' selected' : '') + '" data-method="' + m + '">' +
-          '<div class="mc-rank" style="font-size:18px;">' + (i === 0 ? '🏆' : '') + '</div>' +
+          '<div class="mc-rank" style="font-size:18px;">' + (i + 1) + '</div>' +
           '<div class="mc-name">' + m + '</div>' +
           '<div class="mc-ari">ARI ' + S.fmt(a, 2) + '</div></div>';
       }).join('');
@@ -292,21 +271,48 @@
       ' — ' + selectedMethod + ' 的结果…';
 
     var isOurs = selectedMethod === 'SFM-MA';
+    // 该切片有哪些方法跑出了可视化数据（baseline 需先跑 baseline/<方法>/run.py）
+    var slice = (d.slices.filter(function (s) { return s.id === section; })[0]) || {};
+    var hasViz = (slice.viz_methods || []).indexOf(selectedMethod) >= 0;
+
     var jobs = [S.api('/api/metrics?dataset=' + ds + '&section=' + section)];
-    if (isOurs) {
-      jobs.push(S.api('/api/visualize/' + ds + '?section=' + section).catch(function () { return null; }));
+    var vizLabels = [null];
+    if (hasViz) {
+      jobs.push(S.api('/api/visualize/' + ds + '?section=' + section +
+        '&method=' + encodeURIComponent(selectedMethod)).catch(function () { return null; }));
+      vizLabels.push(selectedMethod);
     }
+    // 补齐「方法对比」：该切片若还跑过其他 baseline（viz_methods），一并取回，
+    // 以便把它们的逐切片 ARI 画进对比条形图（此前只有 SFM-MA）。
+    (slice.viz_methods || []).forEach(function (m) {
+      if (m === 'SFM-MA' || m === selectedMethod) return;
+      jobs.push(S.api('/api/visualize/' + ds + '?section=' + section +
+        '&method=' + encodeURIComponent(m)).catch(function () { return null; }));
+      vizLabels.push(m);
+    });
 
     Promise.all(jobs).then(function (r) {
       var metricRow = (r[0] || [])[0] || null;
-      var viz = isOurs ? r[1] : null;
-      var metrics = isOurs ? metricRow : baselineMetrics(ds, section, selectedMethod);
+      var viz = hasViz ? r[1] : null;
+      // 有本平台跑出的可视化时，指标以该结果自带的为准；若该结果缺指标
+      // （如 GraphST 的 h5ad 未存 ari），回退到原文报告值，避免显示 "—"
+      var metrics = isOurs ? metricRow
+        : ((viz && viz.metrics && viz.metrics.ari != null) ? viz.metrics
+           : baselineMetrics(ds, section, selectedMethod));
+
+      // 收集每个 baseline 在本切片的实测 ARI（来自该 baseline 的 viz.json）
+      var avail = {};
+      for (var vi = 1; vi < r.length; vi++) {
+        if (vizLabels[vi] && r[vi] && r[vi].metrics && r[vi].metrics.ari != null) {
+          avail[vizLabels[vi]] = r[vi].metrics;
+        }
+      }
 
       current = {
         dataset: ds, section: section, method: selectedMethod,
-        adapter: $('adapterSelect').value,
-        label_rate: parseFloat($('labelRateSelect').value),
-        metrics: metrics, dataset_meta: metricRow, viz: viz
+        // 预计算结果的固定口径（与论文主实验一致），页面不再提供参数选择
+        adapter: 'ce', label_rate: 0.05,
+        metrics: metrics, dataset_meta: metricRow, viz: viz, avail: avail
       };
       render(current);
 
@@ -327,6 +333,11 @@
     if (ds === 'DLPFC' && per && per[section]) {
       return { ari: per[section][0], nmi: per[section][1], sc: null, db: null };
     }
+    // 其他多切片数据集（如 MFC）的逐切片基线，取自论文表格
+    var ps = BASELINES.per_slice && BASELINES.per_slice[ds] && BASELINES.per_slice[ds][method];
+    if (ps && ps[section]) {
+      return { ari: ps[section][0], nmi: ps[section][1], sc: null, db: null };
+    }
     var one = BASELINES.single_dataset[ds];
     if (one && one[method] !== undefined) {
       return { ari: one[method], nmi: null, sc: null, db: null };
@@ -340,24 +351,44 @@
     var isOurs = res.method === 'SFM-MA';
     var m = res.metrics || {};
     var title = res.dataset + (res.section ? ' / ' + res.section : '');
-    $('resultTitle').textContent = title + ' — ' + res.method;
+    $('resultTitle').textContent = res.method;
+    $('resultSubtitle').textContent = title;
+    renderMetricCards(m);
 
-    $('ariValue').textContent = S.fmt(m.ari);
-    $('nmiValue').textContent = S.fmt(m.nmi);
-    $('scValue').textContent = S.fmt(m.sc);
-    $('dbValue').textContent = S.fmt(m.db);
-
+    var ranOnPlatform = !!(res.viz && res.viz.x && res.viz.x.length);
     $('metricNote').innerHTML = isOurs
       ? '<div class="alert alert-info" style="font-size:12px;">本页指标为该切片<b>单次完整推理</b>的结果。' +
         '论文与汇总表中的数值是 <b>10 个固定种子的均值 ± 标准差</b>，两者会有小幅差异，' +
         '统计口径的完整结果见 <a href="experiments.html">实验结果</a> 页。</div>'
-      : '<div class="alert alert-warn" style="font-size:12px;">' + res.method +
-        ' 的数值取自该方法原文在相同切片上的报告值，仅用于横向对照，' +
-        '不含本平台重跑的空间图与嵌入。</div>';
+      : (ranOnPlatform
+        ? '<div class="alert alert-info" style="font-size:12px;">' + res.method +
+          ' 的空间图与嵌入图由本平台在<b>同一份输入数据</b>上重跑得到（脚本：<code>baseline/' +
+          res.method + '/run.py</code>）。若该次运行未记录某项指标，则用该方法原文在相同切片上的报告值补全。</div>'
+        : '<div class="alert alert-warn" style="font-size:12px;">' + res.method +
+          ' 的数值取自该方法原文在相同切片上的报告值，仅用于横向对照。' +
+          '本平台尚未重跑该方法，因此没有空间图与嵌入图 —— ' +
+          '运行 <code>baseline/' + res.method + '/run.py</code> 后重新生成前端数据即可显示。</div>');
 
     renderCompare(res);
 
-    var hasViz = isOurs && res.viz && res.viz.x && res.viz.x.length;
+    // 结果解读助手（小胞）：把当前结果的指标与排名交给它生成解读
+    if (S.assistant) {
+      var av = res.viz || {};
+      S.assistant.predict({
+        dataset: res.dataset, section: res.section, method: res.method,
+        metrics: res.metrics || {},
+        rank: compareInfo ? compareInfo.rank : null,
+        total: compareInfo ? compareInfo.total : null,
+        gap: compareInfo ? compareInfo.gap : null,
+        metric: compareInfo ? compareInfo.metric : 'ARI',
+        nSpots: av.n_spots || null,
+        nDomains: av.domain ? new Set(av.domain).size : null,
+        nTrue: (av.true_label && av.true_label.length) ? new Set(av.true_label).size : null,
+        embVar: av.emb_var_ratio || null
+      });
+    }
+
+    var hasViz = ranOnPlatform;
     show('spatialSection', !!hasViz);
     show('embeddingSection', !!(hasViz && res.viz.emb_x));
 
@@ -386,32 +417,64 @@
       }
 
       if (v.emb_x) {
-        S.scatterByCategory('embeddingChart', '', v.emb_x, v.emb_y, v.domain, { symbolSize: 4 });
+        $('embDesc').textContent = res.method + ' 输出的 spot 嵌入，经 PCA 投影到前两个主成分';
+        S.scatterByCategory('embeddingChart', '', v.emb_x, v.emb_y, v.domain, {
+          symbolSize: 4,
+          embedding: true,
+          equalAspect: true
+        });
         var r = v.emb_var_ratio || [0, 0];
         $('embNote').innerHTML = '按预测空间域着色。PC1 解释方差 <b>' +
           (r[0] * 100).toFixed(1) + '%</b>，PC2 <b>' + (r[1] * 100).toFixed(1) +
           '%</b>，合计 <b>' + ((r[0] + r[1]) * 100).toFixed(1) +
-          '%</b>。同一空间域的 spot 在嵌入空间聚成簇，说明表示学习已把空间结构编码进嵌入。';
+          '%</b>。该图展示的是二维 PCA 投影形态；当 PC1 占比较高时，点云可能呈带状或弯折分布。';
       }
     }
 
     window.scrollTo({ top: $('resultArea').offsetTop - 100, behavior: 'smooth' });
   }
 
-  /** 当前切片上各方法的 ARI 对比（没有该切片数值的方法不画，避免用平均值冒充） */
+  function hasMetric(v) {
+    return v !== null && v !== undefined && v !== '' && !Number.isNaN(Number(v));
+  }
+
+  function renderMetricCards(m) {
+    var metrics = [
+      { key: 'ari', label: 'ARI', desc: '有真实标注时计算', value: m.ari },
+      { key: 'nmi', label: 'NMI', desc: '有真实标注时计算', value: m.nmi },
+      { key: 'sc', label: 'Silhouette', desc: '无标注聚类质量', value: m.sc },
+      { key: 'db', label: 'DBI', desc: '无标注聚类质量', value: m.db }
+    ].filter(function (item) { return hasMetric(item.value); });
+
+    $('metricsGrid').className = 'stat-grid analysis-metrics-grid metric-count-' + Math.max(metrics.length, 1);
+    $('metricsGrid').innerHTML = metrics.length
+      ? metrics.map(function (item) {
+          return '<div class="stat-card analysis-metric-card">' +
+            '<div class="stat-value">' + S.fmt(item.value) + '</div>' +
+            '<div class="stat-label">' + item.label + '</div>' +
+            '<small>' + item.desc + '</small>' +
+          '</div>';
+        }).join('')
+      : '<div class="alert alert-warn">当前结果没有可展示的评价指标。</div>';
+  }
+
+  /** 当前切片上各方法的对比：有 ARI 用 ARI；无标注数据集（只有 SC）改用 SC */
   function renderCompare(res) {
     var names = [], vals = [];
     BASELINES.methods.forEach(function (mth) {
-      var mm = mth === 'SFM-MA'
-        ? (res.dataset_meta || {})
-        : baselineMetrics(res.dataset, res.section, mth);
+      var mm;
+      if (mth === 'SFM-MA') {
+        mm = res.dataset_meta || {};
+      } else if (res.avail && res.avail[mth]) {
+        mm = res.avail[mth];   // 该切片跑过的 baseline，取实测 ARI（viz.json）
+      } else {
+        mm = baselineMetrics(res.dataset, res.section, mth);
+      }
       if (mm && mm.ari != null) { names.push(mth); vals.push(mm.ari); }
     });
 
     if (!names.length) {
-      $('methodComparisonChart').innerHTML =
-        '<p class="text-muted" style="font-size:12px;">该切片暂无可对比的基线数值。</p>';
-      $('compareNote').textContent = '';
+      renderScCompare(res);
       return;
     }
 
@@ -423,10 +486,58 @@
       { highlight: 'SFM-MA', xName: 'ARI', max: Math.min(1, Math.max.apply(null, vals) + 0.12) });
 
     var rank = order.findIndex(function (o) { return o[0] === 'SFM-MA'; });
+    compareInfo = rank >= 0
+      ? { rank: rank + 1, total: order.length,
+          gap: (rank === 0 && order.length > 1) ? order[1][1] - order[0][1] : null, metric: 'ARI' }
+      : null;
     $('compareNote').innerHTML = rank >= 0
       ? 'SFM-MA 在该切片上排名 <b>第 ' + (rank + 1) + ' / ' + order.length + '</b>。' +
         '缺少该切片公开数值的方法未列出。'
       : '仅显示有该切片公开数值的方法。';
+  }
+
+  /**
+   * 无真实标注的数据集（如人肺癌、人卵巢癌）没有 ARI，改用轮廓系数 SC 横向对比。
+   * SFM-MA 取本平台实测值；基线取自论文在相同数据上的 SC 报告值。
+   */
+  function renderScCompare(res) {
+    var rows = {};
+    if (res.dataset_meta && res.dataset_meta.sc != null) {
+      rows['SFM-MA'] = res.dataset_meta.sc;
+    } else if (res.viz && res.viz.metrics && res.viz.metrics.sc != null) {
+      rows['SFM-MA'] = res.viz.metrics.sc;
+    }
+    var scBase = BASELINES.single_dataset_sc && BASELINES.single_dataset_sc[res.dataset];
+    if (scBase) {
+      BASELINES.methods.forEach(function (mth) {
+        if (mth !== 'SFM-MA' && scBase[mth] != null) rows[mth] = scBase[mth];
+      });
+    }
+
+    var keys = Object.keys(rows);
+    if (!keys.length) {
+      compareInfo = null;
+      S.disposeChart('methodComparisonChart');
+      $('methodComparisonChart').innerHTML =
+        '<p class="text-muted" style="font-size:12px;">该切片暂无可对比的基线数值。</p>';
+      $('compareNote').textContent = '';
+      return;
+    }
+
+    var order = keys.map(function (k) { return [k, rows[k]]; })
+      .sort(function (a, b) { return b[1] - a[1]; });
+    S.barCompare('methodComparisonChart',
+      order.map(function (o) { return o[0]; }),
+      order.map(function (o) { return o[1]; }),
+      { highlight: 'SFM-MA', xName: 'SC', max: Math.min(1, Math.max.apply(null, order.map(function (o) { return o[1]; })) + 0.12) });
+    var scrnaRank = order.findIndex(function (o) { return o[0] === 'SFM-MA'; });
+    compareInfo = scrnaRank >= 0
+      ? { rank: scrnaRank + 1, total: order.length,
+          gap: (scrnaRank === 0 && order.length > 1) ? order[1][1] - order[0][1] : null, metric: 'SC' }
+      : null;
+    $('compareNote').innerHTML =
+      '该数据集<b>无真实标注</b>，没有 ARI，改用轮廓系数 SC 对比（越大越好）。' +
+      'SFM-MA 为本平台实测值，基线取自论文在相同数据上的报告值。';
   }
 
   // ── 导出 / 重置 ───────────────────────────────────────
@@ -461,12 +572,13 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <h4>SFM-MA</h4>
-      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+      <h4>CellSpace-Bridge</h4>
+      <p>融合 SaDGAE 与 SFM-MA 的统一图表示学习系统，面向单细胞聚类与空间转录组空间域识别。</p>
     </div>
     <div class="footer-col">
       <h5>平台</h5>
       <a href="predict.html">在线预测</a>
+      <a href="singlecell.html">单细胞聚类</a>
       <a href="experiments.html">实验结果</a>
       <a href="tasks.html">任务列表</a>
       <a href="download.html">下载中心</a>
@@ -484,7 +596,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+    © 2026 CellSpace-Bridge Team. Licensed under MIT. Free for academic use.
   </div>
 </footer>
 

@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SFM-MA — 空间转录组多模态基础模型 — Spatial Foundation Model</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<title>CellSpace-Bridge — 单细胞与空间转录组统一图表示系统 — Unified Graph Omics System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
 <link rel="stylesheet" href="static/css/style.css">
 <script src="static/js/echarts.min.js"></script>
 <script>window.SFM_STATIC={base:"static/"};</script>
 <script src="static/js/app.js"></script>
+<script src="static/js/assistant.js"></script>
 
 
 </head>
@@ -19,32 +20,35 @@
   <div class="navbar-inner">
     <a href="index.html" class="navbar-logo">
       <span class="logo-icon">S</span>
-      SFM-MA
+      CellSpace
     </a>
     <div class="navbar-links" id="navLinks">
       <a href="index.html" class="nav-link active">
-        <span class="nav-icon">🏠</span>首页
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
       </a>
       <a href="predict.html" class="nav-link ">
-        <span class="nav-icon">🔬</span>预测
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>预测
+      </a>
+      <a href="singlecell.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
       </a>
       <a href="experiments.html" class="nav-link ">
-        <span class="nav-icon">📊</span>实验结果
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>实验结果
       </a>
       <a href="tasks.html" class="nav-link ">
-        <span class="nav-icon">📋</span>任务列表
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
       </a>
       <a href="download.html" class="nav-link ">
-        <span class="nav-icon">⬇️</span>下载
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg></span>下载
       </a>
       <a href="references.html" class="nav-link ">
-        <span class="nav-icon">📄</span>参考文献
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>参考文献
       </a>
       <a href="guide.html" class="nav-link ">
-        <span class="nav-icon">📖</span>用户指南
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>用户指南
       </a>
       <a href="contact.html" class="nav-link ">
-        <span class="nav-icon">📞</span>联系我们
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>联系我们
       </a>
     </div>
     <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
@@ -56,234 +60,297 @@
 <!-- Hero -->
 <section class="hero">
   <div class="hero-inner">
-    <div>
+    <div class="hero-copy">
+      <span class="hero-eyebrow">Unified Graph Representation · scRNA-seq + Spatial Transcriptomics</span>
       <h1>
-        <span class="highlight">SFM-MA</span><br>
-        空间转录组<br>多模态基础模型
+        <span class="highlight">CellSpace-Bridge</span><br>
+        <span class="hero-nowrap">单细胞 + 空间转录组</span><br>统一图表示系统
       </h1>
       <p>
-        Spatial Foundation Model with Multimodal Adapter — 通过"多数据集预训练 + 轻量化适配"范式，
-        仅需 5% 标注即可实现精准的空间域识别。
+        融合 SaDGAE 的自适应细胞图学习与 SFM-MA 的空间多模态预训练-适配框架，
+        在同一表达编码底座上完成细胞类型聚类、空间域识别与跨组学表示迁移。
       </p>
       <div class="hero-actions">
-        <a href="predict.html" class="btn btn-primary btn-lg">🚀 开始预测</a>
-        <a href="guide.html" class="btn btn-secondary btn-lg">📖 用户指南</a>
+        <a href="predict.html" class="btn btn-primary btn-lg"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>空间域预测</a>
+        <a href="experiments.html" class="btn btn-secondary btn-lg"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg>查看实验</a>
+      </div>
+      <div class="hero-metrics" aria-label="CellSpace-Bridge overview">
+        <div><b>2</b><span>组学模态</span></div>
+        <div><b>9+</b><span>ST 数据集</span></div>
+        <div><b>128K+</b><span>spot / cell</span></div>
       </div>
     </div>
     <div class="hero-image">
-      <img src="static/figs/SFM-MA-workflow.png" alt="SFM-MA Workflow">
+      <div class="hero-framework-carousel" aria-label="CellSpace-Bridge framework carousel">
+        <article class="hero-framework-card spatial-card active" data-framework-card="0">
+          <div class="framework-card-head">
+            <span>Spatial Transcriptomics</span>
+            <strong>SFM-MA 空间转录组框架</strong>
+          </div>
+          <div class="framework-image-wrap">
+            <img src="static/figs/cellspace-spatial-framework.png" alt="SFM-MA spatial transcriptomics framework">
+            <button type="button" class="framework-zoom-trigger" data-framework-zoom aria-label="放大查看 SFM-MA 空间转录组框架">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 4 4"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+        <article class="hero-framework-card scrna-card" data-framework-card="1">
+          <div class="framework-card-head">
+            <span>Single-cell RNA-seq</span>
+            <strong>SaDGAE 单细胞聚类框架</strong>
+          </div>
+          <div class="framework-image-wrap">
+            <img src="static/figs/cellspace-sadgae-framework.svg" alt="SaDGAE single-cell clustering framework">
+            <button type="button" class="framework-zoom-trigger" data-framework-zoom aria-label="放大查看 SaDGAE 单细胞聚类框架">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="11" cy="11" r="6"></circle>
+                <path d="m16 16 4 4"></path>
+              </svg>
+            </button>
+          </div>
+        </article>
+        <div class="framework-carousel-dots" aria-label="框架图切换">
+          <button type="button" class="active" data-framework-slide="0" aria-label="停留在空间转录组框架">空间转录组</button>
+          <button type="button" data-framework-slide="1" aria-label="停留在单细胞框架">单细胞</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<div class="framework-lightbox" id="frameworkLightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="框架图放大查看">
+  <button type="button" class="framework-lightbox-backdrop" data-framework-close aria-label="关闭框架图放大查看"></button>
+  <div class="framework-lightbox-panel">
+    <div class="framework-lightbox-head">
+      <div>
+        <span id="frameworkLightboxTag"></span>
+        <strong id="frameworkLightboxTitle"></strong>
+      </div>
+      <button type="button" class="framework-lightbox-close" data-framework-close aria-label="关闭">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="framework-lightbox-body">
+      <img id="frameworkLightboxImage" src="" alt="">
+    </div>
+  </div>
+</div>
+
 <!-- 工作流程 -->
-<section class="section" style="background: #fff;">
+<section class="section workflow-section">
   <div class="section-inner">
     <div class="section-header">
       <span class="badge">Pipeline</span>
-      <h2>两阶段工作流程</h2>
-      <p>预训练 + 适配的解耦设计，在少样本条件下保持鲁棒的识别性能</p>
+      <h2>统一图表示工作流</h2>
+      <p>用同一表达编码底座承接单细胞与空间转录组，再通过图结构和任务适配器分流</p>
     </div>
     <div class="workflow">
       <div class="workflow-step">
         <span class="step-number">1</span>
-        <span class="step-icon">🧬</span>
-        <h4>多数据集预训练</h4>
-        <p>在 9 个公开 ST 数据集上联合无监督预训练，无需人工标注</p>
+        <span class="step-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3c0 6 10 6 10 12M17 3c0 6-10 6-10 12"/><path d="M7 7h10M7 17h10"/></svg></span>
+        <h4>表达底座预训练</h4>
+        <p>联合建模 scRNA-seq 与 ST 的基因表达特征，形成可迁移的细胞级表示</p>
       </div>
       <div class="workflow-connector">→</div>
       <div class="workflow-step">
         <span class="step-number">2</span>
-        <span class="step-icon">🔗</span>
-        <h4>非对称跨模态融合</h4>
-        <p>基因表达为指导，选择性地整合组织形态学特征</p>
+        <span class="step-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 12h6"/><path d="M10 7H7a3 3 0 0 0 0 6h3M14 17h3a3 3 0 0 0 0-6h-3"/></svg></span>
+        <h4>自适应细胞图</h4>
+        <p>SaDGAE 分支动态重构 cell-cell 关系，缓解单细胞数据稀疏与 dropout 噪声</p>
       </div>
       <div class="workflow-connector">→</div>
       <div class="workflow-step">
         <span class="step-number">3</span>
-        <span class="step-icon">📐</span>
-        <h4>GCN 空间编码</h4>
-        <p>图神经网络捕获相邻 spot 的空间依赖关系</p>
+        <span class="step-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><circle cx="12" cy="6" r="2"/><path d="M6.8 17.3l4-8M17.2 17.3l-4-8M7 19h10"/></svg></span>
+        <h4>空间多模态图</h4>
+        <p>SFM-MA 分支融合空间邻接、基因表达与组织图像，编码 spot 级组织结构</p>
       </div>
       <div class="workflow-connector">→</div>
       <div class="workflow-step">
         <span class="step-number">4</span>
-        <span class="step-icon">🎯</span>
-        <h4>轻量化适配</h4>
-        <p>冻结 backbone，仅训练 MLP 适配器，5% 标注即可</p>
+        <span class="step-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span>
+        <h4>任务适配输出</h4>
+        <p>聚类适配器输出细胞类型，空间适配器输出空间域标签，统一可视化展示</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 方法对比 -->
-<section class="section" style="background: var(--primary-50);">
+<section class="section benchmark-section">
   <div class="section-inner">
     <div class="section-header">
       <span class="badge">Benchmark</span>
       <h2>DLPFC 基准测试</h2>
-      <p>在 12 个 DLPFC 切片上，SFM-MA 以 5% 标注超越 6 种现有方法</p>
+      <p>空间分支采用 SFM-MA 在 DLPFC 上的实测基准，单细胞分支采用 SaDGAE 聚类实验结果</p>
     </div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;">
-      <div id="benchmarkChart" style="height: 400px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); padding: 16px;"></div>
-      <div>
+    <div class="benchmark-shell">
+      <div class="chart-card">
+        <div class="chart-card-head">
+          <span>Average ARI</span>
+          <strong>DLPFC · 12 slices</strong>
+        </div>
+        <div id="benchmarkChart" class="home-chart"></div>
+      </div>
+      <div class="benchmark-copy">
         <div class="methods-showcase" style="grid-template-columns: 1fr 1fr;" id="methodCards"></div>
-        <p style="margin-top: 16px; font-size: 14px; color: var(--gray-500);" id="benchmarkNote"></p>
+        <p class="benchmark-note" id="benchmarkNote"></p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 核心特点 -->
-<section class="section" style="background: #fff;">
+<section class="section feature-section">
   <div class="section-inner">
     <div class="section-header">
       <span class="badge">Features</span>
       <h2>核心创新</h2>
-      <p>三个关键设计，使 SFM-MA 在少样本空间域识别中表现优异</p>
+      <p>从单一空间域识别升级为跨组学统一图表示学习，一套框架覆盖细胞聚类与空间域识别</p>
     </div>
     <div class="grid-3">
       <div class="feature-card">
-        <div class="fc-icon" style="background: var(--primary-100); color: var(--primary-600);">🔀</div>
-        <h3>非对称跨模态融合</h3>
-        <p>基因表达为主导模态，通过交叉注意力机制选择性整合组织图像特征，避免对称融合稀释主导信号。</p>
+        <div class="fc-icon" style="background: var(--primary-100); color: var(--primary-600);"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="1.8"/><circle cx="15" cy="12" r="1.8"/><circle cx="7" cy="17" r="1.8"/></svg></div>
+        <h3>双图协同表示学习</h3>
+        <p>单细胞侧构建自适应 cell graph，空间侧构建 spot spatial graph，在共享表达空间内完成结构对齐。</p>
       </div>
       <div class="feature-card">
-        <div class="fc-icon" style="background: #D1FAE5; color: #059669;">🧩</div>
+        <div class="fc-icon" style="background: var(--success-bg); color: var(--success);"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="7" height="6" rx="1"/><rect x="13" y="4" width="7" height="6" rx="1"/><rect x="4" y="14" width="7" height="6" rx="1"/><rect x="13" y="14" width="7" height="6" rx="1"/></svg></div>
         <h3>预训练-适配解耦</h3>
-        <p>通用表示学习与下游任务适配分离，冻结 backbone 仅训练轻量适配器，防止少样本过拟合。</p>
+        <p>表达编码器、图编码器和任务适配器解耦，支持细胞聚类、空间域识别和跨数据集迁移三个任务。</p>
       </div>
       <div class="feature-card">
-        <div class="fc-icon" style="background: #FEF3C7; color: #D97706;">📊</div>
-        <h3>跨平台泛化</h3>
-        <p>在 Visium、MERFISH、STARmap、osmFISH 等多平台数据集上均取得稳定表现，无需平台适配。</p>
+        <div class="fc-icon" style="background: var(--warning-bg); color: var(--warning);"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></div>
+        <h3>生物医学应用闭环</h3>
+        <p>从细胞类型解析到组织区域定位，形成面向精准医学、肿瘤微环境和组织发育研究的完整分析链路。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 支持的数据集 -->
-<section class="section" style="background: var(--primary-50);">
+<section class="section dataset-section">
   <div class="section-inner">
     <div class="section-header">
       <span class="badge">Datasets</span>
       <h2>支持的数据集</h2>
-      <p>涵盖 9 个公开数据集、4 种 ST 平台、多组织类型</p>
+      <p>覆盖 9 个公开空间转录组数据集与 9 个单细胞转录组数据集，横跨 4 种测序平台</p>
     </div>
     <div class="grid-4">
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🧠</div>
-        <h3 style="font-size: 15px; font-weight: 600;">DLPFC</h3>
-        <p style="font-size: 12px;">12切片 · 人脑 · Visium</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/brain.svg" alt="DLPFC icon">
+        </div>
+        <h3>DLPFC</h3>
+        <p>12切片 · 人脑 · Visium</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🐭</div>
-        <h3 style="font-size: 15px; font-weight: 600;">Mouse Brain</h3>
-        <p style="font-size: 12px;">1切片 · 小鼠前脑 · Visium</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/mouse.svg" alt="Mouse Brain icon">
+        </div>
+        <h3>Mouse Brain</h3>
+        <p>1切片 · 小鼠前脑 · Visium</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🩺</div>
-        <h3 style="font-size: 15px; font-weight: 600;">Breast Cancer</h3>
-        <p style="font-size: 12px;">1切片 · 人乳腺癌 · Visium</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/breast.svg" alt="Breast Cancer icon">
+        </div>
+        <h3>Breast Cancer</h3>
+        <p>1切片 · 人乳腺癌 · Visium</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🔬</div>
-        <h3 style="font-size: 15px; font-weight: 600;">MERFISH POA</h3>
-        <p style="font-size: 12px;">1切片 · 小鼠下丘脑 · MERFISH</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/merfish.svg" alt="MERFISH POA icon">
+        </div>
+        <h3>MERFISH POA</h3>
+        <p>1切片 · 小鼠下丘脑 · MERFISH</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🧬</div>
-        <h3 style="font-size: 15px; font-weight: 600;">MFC</h3>
-        <p style="font-size: 12px;">9切片 · 小鼠额叶皮层 · MERFISH</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/dna.svg" alt="MFC icon">
+        </div>
+        <h3>MFC</h3>
+        <p>9切片 · 小鼠额叶皮层 · MERFISH</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">⭐</div>
-        <h3 style="font-size: 15px; font-weight: 600;">STARmap</h3>
-        <p style="font-size: 12px;">1切片 · 小鼠视觉皮层 · STARmap</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/starmap.svg" alt="STARmap icon">
+        </div>
+        <h3>STARmap</h3>
+        <p>1切片 · 小鼠视觉皮层 · STARmap</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
-        <h3 style="font-size: 15px; font-weight: 600;">osmFISH</h3>
-        <p style="font-size: 12px;">1切片 · 小鼠体感皮层 · osmFISH</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/osmfish.svg" alt="osmFISH icon">
+        </div>
+        <h3>osmFISH</h3>
+        <p>1切片 · 小鼠体感皮层 · osmFISH</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🫁</div>
-        <h3 style="font-size: 15px; font-weight: 600;">Lung Cancer</h3>
-        <p style="font-size: 12px;">1切片 · 人肺癌 · Visium</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/lung.svg" alt="Lung Cancer icon">
+        </div>
+        <h3>Lung Cancer</h3>
+        <p>1切片 · 人肺癌 · Visium</p>
       </div>
       
-      <div class="card" style="text-align: center; padding: 20px 16px;">
-        <div style="font-size: 32px; margin-bottom: 8px;">🫘</div>
-        <h3 style="font-size: 15px; font-weight: 600;">Ovarian Cancer</h3>
-        <p style="font-size: 12px;">1切片 · 人卵巢癌 · Visium</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/ovarian.svg" alt="Ovarian Cancer icon">
+        </div>
+        <h3>Ovarian Cancer</h3>
+        <p>1切片 · 人卵巢癌 · Visium</p>
       </div>
       
-    </div>
-  </div>
-</section>
-
-<!-- 迁移实验亮点 -->
-<section class="section" style="background: #fff;">
-  <div class="section-inner">
-    <div class="section-header">
-      <span class="badge">Transferability</span>
-      <h2>迁移能力的边界与机制</h2>
-      <p>六组细化实验、97 个配置、970 次种子级重复，系统回答「什么样的预训练源真正有用」</p>
-    </div>
-    <div class="finding-grid" style="max-width: 1060px; margin: 0 auto;">
-      <div class="finding" data-kind="pos">
-        <div class="finding-tag">正迁移</div>
-        <h4>多源覆盖驱动正迁移</h4>
-        <p>MERFISH POA 上完整多源预训练达 <b>0.779</b>，显著超过单数据集自训（<b>+0.110</b>）。</p>
+      <div class="dataset-card">
+        <div class="dataset-mark">
+          <img src="static/figs/dataset-icons/dna.svg" alt="SaDGAE scRNA icon">
+        </div>
+        <h3>SaDGAE scRNA</h3>
+        <p>9数据集 · 细胞类型聚类 · scRNA-seq</p>
       </div>
-      <div class="finding" data-kind="eq">
-        <div class="finding-tag">跨平台互补</div>
-        <h4>加多样性 &gt; 加数据量</h4>
-        <p>等细胞量下 3 张 MFC + osmFISH（<b>0.571</b>）显著优于 4 张 MFC（<b>0.424</b>）。</p>
-      </div>
-      <div class="finding" data-kind="neg">
-        <div class="finding-tag">迁移边界</div>
-        <h4>同源小规模预训练无收益</h4>
-        <p>切片内留一 21/21、个体间 42/42 的差值全为负，收益只存在于全局多源预训练。</p>
-      </div>
-    </div>
-    <div style="text-align: center; margin-top: 28px;">
-      <a href="experiments.html" class="btn btn-primary">📊 查看完整实验结果与统计分析</a>
+      
     </div>
   </div>
 </section>
 
 <!-- 统计数字 -->
-<section class="section" style="background: linear-gradient(135deg, var(--primary-800), var(--primary-600)); color: #fff;">
+<section class="section stat-band">
   <div class="section-inner">
-    <div class="stat-grid" style="max-width: 900px; margin: 0 auto;" id="heroStats">
+    <div class="stat-grid home-stat-grid" id="heroStats">
       
-      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
-        <div class="stat-value" style="color: var(--accent-light);">9</div>
-        <div class="stat-label" style="color: rgba(255,255,255,0.7);">公开数据集</div>
+      <div class="stat-card">
+        <div class="stat-value">2</div>
+        <div class="stat-label">组学模态</div>
       </div>
       
-      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
-        <div class="stat-value" style="color: var(--accent-light);">28</div>
-        <div class="stat-label" style="color: rgba(255,255,255,0.7);">组织切片</div>
+      <div class="stat-card">
+        <div class="stat-value">9+</div>
+        <div class="stat-label">公开数据集</div>
       </div>
       
-      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
-        <div class="stat-value" style="color: var(--accent-light);">128K+</div>
-        <div class="stat-label" style="color: rgba(255,255,255,0.7);">spots / cells</div>
+      <div class="stat-card">
+        <div class="stat-value">128K+</div>
+        <div class="stat-label">spots / cells</div>
       </div>
       
-      <div class="stat-card" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(8px);">
-        <div class="stat-value" style="color: var(--accent-light);">5%</div>
-        <div class="stat-label" style="color: rgba(255,255,255,0.7);">标注即可使用</div>
+      <div class="stat-card">
+        <div class="stat-value">2</div>
+        <div class="stat-label">任务分支</div>
       </div>
       
     </div>
@@ -301,7 +368,7 @@
       .map(function (m) { return { name: m, ari: avg[m].ari, nmi: avg[m].nmi }; })
       .sort(function (x, y) { return y.ari - x.ari; });
 
-    var shades = ['#7C3AED', '#8B5CF6', '#A78BFA', '#B9A5FB', '#C4B5FD', '#DDD6FE', '#EDE9FE'];
+    var shades = ['#0075de', '#3b8fdd', '#5fa4e5', '#80b8ec', '#a0cbf2', '#c0def7', '#e0eefc'];
     S.chart('benchmarkChart', {
       tooltip: S.tooltipStyle({
         trigger: 'axis', axisPointer: { type: 'shadow' },
@@ -332,7 +399,7 @@
     document.getElementById('methodCards').innerHTML = ranked.map(function (d, i) {
       return '<div class="method-card" style="border-color:' +
         (i === 0 ? 'var(--primary-600)' : 'var(--gray-200)') + ';">' +
-        '<div class="mc-rank">' + (i === 0 ? '🏆' : (i + 1)) + '</div>' +
+        '<div class="mc-rank">' + (i + 1) + '</div>' +
         '<div class="mc-name">' + d.name + '</div>' +
         '<div class="mc-ari">ARI ' + S.fmt(d.ari, 3) + '</div></div>';
     }).join('');
@@ -354,10 +421,10 @@
   S.api('/api/summary').then(function (d) {
     var s = d.datasets || {};
     var vals = [
-      [s.n_datasets, '公开数据集'],
-      [s.n_slices, '组织切片'],
+      ['2', '组学模态'],
+      [s.n_datasets ? s.n_datasets + '+' : '9+', '公开数据集'],
       [s.total_spots ? (s.total_spots / 1000).toFixed(0) + 'K+' : '—', 'spots / cells'],
-      ['5%', '标注即可使用']
+      ['2', '任务分支']
     ];
     var cards = document.querySelectorAll('#heroStats .stat-card');
     vals.forEach(function (v, i) {
@@ -375,12 +442,13 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <h4>SFM-MA</h4>
-      <p>多模态预训练与轻量化适配框架，用于空间转录组学的少样本空间域识别。</p>
+      <h4>CellSpace-Bridge</h4>
+      <p>融合 SaDGAE 与 SFM-MA 的统一图表示学习系统，面向单细胞聚类与空间转录组空间域识别。</p>
     </div>
     <div class="footer-col">
       <h5>平台</h5>
       <a href="predict.html">在线预测</a>
+      <a href="singlecell.html">单细胞聚类</a>
       <a href="experiments.html">实验结果</a>
       <a href="tasks.html">任务列表</a>
       <a href="download.html">下载中心</a>
@@ -398,7 +466,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    © 2026 SFM-MA Team. Licensed under MIT. Free for academic use.
+    © 2026 CellSpace-Bridge Team. Licensed under MIT. Free for academic use.
   </div>
 </footer>
 
@@ -412,6 +480,87 @@ document.addEventListener('click', function(e) {
     document.getElementById('navLinks').classList.remove('open');
   }
 });
+</script>
+
+<script>
+  (function () {
+    var carousel = document.querySelector('.hero-framework-carousel');
+    if (!carousel) return;
+
+    var cards = Array.prototype.slice.call(carousel.querySelectorAll('[data-framework-card]'));
+    var buttons = Array.prototype.slice.call(carousel.querySelectorAll('[data-framework-slide]'));
+    var lightbox = document.getElementById('frameworkLightbox');
+    var lightboxImage = document.getElementById('frameworkLightboxImage');
+    var lightboxTag = document.getElementById('frameworkLightboxTag');
+    var lightboxTitle = document.getElementById('frameworkLightboxTitle');
+    var currentIndex = 0;
+
+    function showFramework(index) {
+      currentIndex = index;
+      carousel.classList.add('is-manual');
+      cards.forEach(function (card, cardIndex) {
+        card.classList.toggle('active', cardIndex === index);
+      });
+      buttons.forEach(function (button, buttonIndex) {
+        var isActive = buttonIndex === index;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    function openFrameworkLightbox(index) {
+      if (!lightbox) return;
+      var card = cards[index] || cards[currentIndex] || cards[0];
+      if (!card) return;
+      var img = card.querySelector('img');
+      var tag = card.querySelector('.framework-card-head span');
+      var title = card.querySelector('.framework-card-head strong');
+      if (!img) return;
+
+      lightboxImage.src = img.currentSrc || img.src;
+      lightboxImage.alt = img.alt || '';
+      lightboxTag.textContent = tag ? tag.textContent : '';
+      lightboxTitle.textContent = title ? title.textContent : '';
+      lightbox.hidden = false;
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('framework-lightbox-open');
+      var close = lightbox.querySelector('.framework-lightbox-close');
+      if (close) close.focus();
+    }
+
+    function closeFrameworkLightbox() {
+      if (!lightbox || lightbox.hidden) return;
+      lightbox.hidden = true;
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('framework-lightbox-open');
+      lightboxImage.removeAttribute('src');
+    }
+
+    buttons.forEach(function (button, index) {
+      button.setAttribute('aria-pressed', index === 0 ? 'true' : 'false');
+      button.addEventListener('click', function () {
+        showFramework(index);
+      });
+    });
+
+    cards.forEach(function (card, index) {
+      var wrap = card.querySelector('.framework-image-wrap');
+      if (!wrap) return;
+      wrap.addEventListener('click', function () {
+        showFramework(index);
+        openFrameworkLightbox(index);
+      });
+    });
+
+    if (lightbox) {
+      Array.prototype.slice.call(lightbox.querySelectorAll('[data-framework-close]')).forEach(function (button) {
+        button.addEventListener('click', closeFrameworkLightbox);
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') closeFrameworkLightbox();
+      });
+    }
+  })();
 </script>
 
 

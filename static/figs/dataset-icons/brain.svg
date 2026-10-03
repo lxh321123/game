@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Brain dataset icon">
+  <defs>
+    <linearGradient id="g" x1="16" y1="12" x2="82" y2="86" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9fe8ff"/>
+      <stop offset="1" stop-color="#4a7dff"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="24" fill="#0d1c2d"/>
+  <path d="M33 67c-10 0-18-8-18-18 0-8 5-15 12-17 2-9 10-15 20-15 7 0 13 3 17 8 9 1 16 9 16 19 0 11-8 20-19 20H48c-5 0-9 3-15 3Z" fill="url(#g)" opacity=".96"/>
+  <path d="M31 35c10-5 18-2 20 7M53 29c-3 8 0 14 8 17M27 48c8-3 15 0 19 8M49 58c3-9 10-13 22-11" fill="none" stroke="#d9fbff" stroke-width="3.8" stroke-linecap="round"/>
+  <circle cx="30" cy="34" r="4" fill="#fff"/>
+</svg>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单细胞聚类 — SaDGAE — Unified Graph Omics System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+<script src="static/js/assistant.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      CellSpace
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>预测
+      </a>
+      <a href="singlecell.html" class="nav-link active">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
+      </a>
+      <a href="experiments.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg></span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+
+<section class="page-content singlecell-page" style="padding-top: 32px;">
+<div class="page-content-inner">
+
+  <div class="breadcrumb">
+    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">单细胞聚类</span>
+  </div>
+
+  <div class="scrna-hero">
+    <div>
+      <span class="badge">SaDGAE Branch</span>
+      <h1><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><circle cx="12" cy="17" r="2.5"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg>单细胞聚类工作台</h1>
+      <p>基于自适应细胞图学习（SaDGAE）的单细胞聚类分析，与空间转录组分支共同组成 CellSpace-Bridge。</p>
+    </div>
+    <div class="scrna-kpis" id="scrnaKpis">
+      <div class="kpi-card skeleton"></div><div class="kpi-card skeleton"></div>
+      <div class="kpi-card skeleton"></div><div class="kpi-card skeleton"></div>
+    </div>
+  </div>
+
+  <div class="scrna-workbench">
+    <aside class="form-section scrna-sidebar">
+      <div class="section-title-row">
+        <h3>数据集</h3>
+        <span class="pill pill-primary">scRNA-seq</span>
+      </div>
+      <p class="form-desc">选择单细胞数据集，查看聚类指标与二维嵌入。</p>
+
+      <div class="form-group">
+        <label>单细胞数据集</label>
+        <div class="label-desc">来自 SaDGAE benchmark</div>
+        <select class="form-control" id="scrnaSelect">
+          <option value="">— 加载中 —</option>
+        </select>
+      </div>
+
+      <div id="scrnaInfo"></div>
+
+      <div class="form-tip scrna-tip">
+        <span class="tip-icon">i</span>
+        <span>聚类指标为 SaDGAE 正式训练结果；二维嵌入为基于聚类结构的确定性布局预览。</span>
+      </div>
+    </aside>
+
+    <main class="form-section scrna-main">
+      <div class="scrna-result-head">
+        <div>
+          <h3>聚类结果概览</h3>
+          <p>当前数据集的 SaDGAE 聚类指标与二维嵌入预览</p>
+        </div>
+        <span class="pill" id="scrnaStatus">—</span>
+      </div>
+      <div class="stat-grid scrna-stat-grid">
+        <div class="stat-card"><div class="stat-value" id="scrnaAri">—</div><div class="stat-label">ARI</div></div>
+        <div class="stat-card"><div class="stat-value" id="scrnaNmi">—</div><div class="stat-label">NMI</div></div>
+        <div class="stat-card"><div class="stat-value" id="scrnaCells">—</div><div class="stat-label">Cells</div></div>
+        <div class="stat-card"><div class="stat-value" id="scrnaClusters">—</div><div class="stat-label">Clusters</div></div>
+      </div>
+      <div id="scrnaEmbedding" class="scrna-embedding"></div>
+      <p class="chart-note" id="scrnaNote"></p>
+    </main>
+  </div>
+
+  <div class="form-section scrna-benchmark-section">
+    <div class="section-title-row">
+      <h3>SaDGAE benchmark 汇总</h3>
+      <span class="pill pill-primary">9 datasets</span>
+    </div>
+    <p class="form-desc">各数据集的 SaDGAE 聚类 ARI / NMI；「模型」列表示对应训练权重是否已随系统部署。</p>
+    <div class="scrna-benchmark-grid">
+      <div class="chart-panel">
+        <h4>各数据集 ARI</h4>
+        <div id="scrnaAriChart" style="height: 320px;"></div>
+      </div>
+      <div class="table-container" style="margin:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>数据集</th><th>细胞数</th><th>簇数</th><th>ARI</th><th>NMI</th><th>模型</th>
+            </tr>
+          </thead>
+          <tbody id="scrnaTable">
+            <tr><td colspan="6" style="text-align:center;padding:32px;color:var(--gray-400);">加载中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<script>
+(function () {
+  var S = window.SFM;
+  var DATA = null;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function byName(name) {
+    return (DATA.datasets || []).filter(function (d) { return d.name === name; })[0];
+  }
+
+  function modelReady(d) {
+    var m = d.model_files || {};
+    return m.ae && m.gnn && m.pretrain && m.final;
+  }
+
+  function renderKpis(summary) {
+    var items = [
+      { v: summary.n_datasets, l: '单细胞数据集', s: 'SaDGAE benchmark' },
+      { v: S.fmtInt(summary.total_cells), l: '细胞总数', s: 'scRNA-seq cells' },
+      { v: S.fmt(summary.avg_ari, 3), l: '平均 ARI', s: '正式训练结果', hi: true },
+      { v: S.fmt(summary.avg_nmi, 3), l: '平均 NMI', s: summary.model_ready + ' 组训练权重' }
+    ];
+    $('scrnaKpis').innerHTML = items.map(function (i) {
+      return '<div class="kpi-card' + (i.hi ? ' kpi-hi' : '') + '">' +
+        '<div class="kpi-value">' + i.v + '</div>' +
+        '<div class="kpi-label">' + i.l + '</div>' +
+        '<div class="kpi-sub">' + i.s + '</div></div>';
+    }).join('');
+  }
+
+  function renderInfo(d) {
+    $('scrnaInfo').innerHTML =
+      '<div class="viz-meta" style="margin-top:12px;margin-bottom:0;">' +
+      '<div>平台<b>' + d.platform + '</b></div>' +
+      '<div>器官<b>' + d.organ + '</b></div>' +
+      '<div>物种<b>' + d.species + '</b></div>' +
+      '<div>HVG<b>' + S.fmtInt(d.hvg) + '</b></div>' +
+      '<div>邻居数<b>' + d.neighbors + '</b></div>' +
+      '<div>原始数据<b>' + (d.data_available ? '已就绪' : '—') + '</b></div>' +
+      '</div>';
+  }
+
+  function renderViz(name) {
+    var d = byName(name);
+    if (!d) return;
+    renderInfo(d);
+    // 结果解读助手（小胞）
+    if (S.assistant) {
+      S.assistant.scrna({
+        name: d.name, label: d.label, ari: d.ari, nmi: d.nmi,
+        nCells: d.n_cells, nClusters: d.n_clusters, modelReady: modelReady(d)
+      });
+    }
+    $('scrnaAri').textContent = S.fmt(d.ari, 3);
+    $('scrnaNmi').textContent = S.fmt(d.nmi, 3);
+    $('scrnaCells').textContent = S.fmtInt(d.n_cells);
+    $('scrnaClusters').textContent = d.n_clusters;
+    $('scrnaStatus').className = 'pill ' + (modelReady(d) ? 'pill-primary' : '');
+    $('scrnaStatus').textContent = modelReady(d) ? '模型就绪' : '部分就绪';
+
+    S.api('/api/scrna/visualize/' + encodeURIComponent(name), { noCache: true })
+      .then(function (v) {
+        S.scatterByCategory('scrnaEmbedding', '', v.x, v.y, v.pred, {
+          symbolSize: v.x.length > 1000 ? 4 : 6,
+          embedding: true,
+          equalAspect: true
+        });
+        $('scrnaNote').textContent = v.embedding_note || '';
+      })
+      .catch(function (e) {
+        $('scrnaNote').innerHTML = '<span class="alert alert-warn">可视化加载失败：' + e.message + '</span>';
+      });
+  }
+
+  function renderTable(rows) {
+    $('scrnaTable').innerHTML = rows.map(function (d) {
+      return '<tr>' +
+        '<td><strong>' + d.label + '</strong><br><span style="color:var(--text-muted);font-size:12px;">' + d.name + '</span></td>' +
+        '<td>' + S.fmtInt(d.n_cells) + '</td>' +
+        '<td>' + d.n_clusters + '</td>' +
+        '<td><strong>' + S.fmt(d.ari, 3) + '</strong></td>' +
+        '<td>' + S.fmt(d.nmi, 3) + '</td>' +
+        '<td>' + (modelReady(d) ? '<span class="pill pill-primary">就绪</span>' : '<span class="pill">部分</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  S.api('/api/scrna/datasets').then(function (data) {
+    DATA = data;
+    renderKpis(data.summary || {});
+    var rows = (data.datasets || []).slice().sort(function (a, b) { return b.ari - a.ari; });
+    $('scrnaSelect').innerHTML = rows.map(function (d, i) {
+      return '<option value="' + d.name + '">' + d.label + '（ARI ' + S.fmt(d.ari, 3) + '）</option>';
+    }).join('');
+    renderTable(rows);
+    S.barCompare('scrnaAriChart', rows.map(function (d) { return d.name; }),
+      rows.map(function (d) { return d.ari; }),
+      { highlight: rows[0] && rows[0].name, xName: 'ARI', max: 1.0, barWidth: '52%' });
+    if (rows[0]) {
+      $('scrnaSelect').value = rows[0].name;
+      renderViz(rows[0].name);
+    }
+  }).catch(function (e) {
+    $('scrnaKpis').innerHTML = '<div class="alert alert-warn">SaDGAE 数据加载失败：' + e.message +
+      '<br>请运行 <code>python web/build_sadgae_data.py</code>。</div>';
+    $('scrnaSelect').innerHTML = '<option value="">加载失败</option>';
+  });
+
+  $('scrnaSelect').addEventListener('change', function () {
+    renderViz(this.value);
+  });
+})();
+</script>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>CellSpace-Bridge</h4>
+      <p>融合 SaDGAE 与 SFM-MA 的统一图表示学习系统，面向单细胞聚类与空间转录组空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">在线预测</a>
+      <a href="singlecell.html">单细胞聚类</a>
+      <a href="experiments.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 CellSpace-Bridge Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>
