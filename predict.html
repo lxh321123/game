@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在线预测 — SFM-MA — Unified Graph Omics System</title>
+<title>空间转录组 — SFM-MA — Unified Graph Omics System</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
 <link rel="stylesheet" href="static/css/style.css">
 <script src="static/js/echarts.min.js"></script>
@@ -26,13 +26,13 @@
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
       </a>
       <a href="predict.html" class="nav-link active">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>预测
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>空间转录组
       </a>
       <a href="singlecell.html" class="nav-link ">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
       </a>
-      <a href="experiments.html" class="nav-link ">
-        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 20V10M11 20V4M17 20v-7"/><path d="M2 20h20"/></svg></span>实验结果
+      <a href="merfish.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>实验结果
       </a>
       <a href="tasks.html" class="nav-link ">
         <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
@@ -60,11 +60,11 @@
 <div class="page-content-inner">
 
   <div class="breadcrumb">
-    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">在线预测</span>
+    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">空间转录组</span>
   </div>
 
   <div class="page-header">
-    <h1><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg>空间域识别预测</h1>
+    <h1><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg>空间转录组工作台</h1>
     <p>选择数据集与方法，即时查看空间域识别结果、嵌入分布与性能指标。</p>
   </div>
 
@@ -359,7 +359,7 @@
     $('metricNote').innerHTML = isOurs
       ? '<div class="alert alert-info" style="font-size:12px;">本页指标为该切片<b>单次完整推理</b>的结果。' +
         '论文与汇总表中的数值是 <b>10 个固定种子的均值 ± 标准差</b>，两者会有小幅差异，' +
-        '统计口径的完整结果见 <a href="experiments.html">实验结果</a> 页。</div>'
+        '统计口径的完整结果见 <a href="/experiments">实验结果</a> 页。</div>'
       : (ranOnPlatform
         ? '<div class="alert alert-info" style="font-size:12px;">' + res.method +
           ' 的空间图与嵌入图由本平台在<b>同一份输入数据</b>上重跑得到；若该次运行未记录某项指标，则以原文报告值补全。</div>'
@@ -575,9 +575,9 @@
     </div>
     <div class="footer-col">
       <h5>平台</h5>
-      <a href="predict.html">在线预测</a>
+      <a href="predict.html">空间转录组</a>
       <a href="singlecell.html">单细胞聚类</a>
-      <a href="experiments.html">实验结果</a>
+      <a href="merfish.html">实验结果</a>
       <a href="tasks.html">任务列表</a>
       <a href="download.html">下载中心</a>
     </div>

@@ -111,7 +111,7 @@ img { max-width: 100%; height: auto; }
   display: flex;
   align-items: center;
   height: 64px;
-  gap: var(--space-xl);
+  gap: var(--space-md);
 }
 
 .navbar-logo {
@@ -141,7 +141,7 @@ img { max-width: 100%; height: auto; }
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
@@ -152,11 +152,11 @@ img { max-width: 100%; height: auto; }
 .navbar-links a {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
+  gap: 5px;
+  padding: 6px 10px;
   border-radius: var(--radius-sm);
   color: var(--gray-500);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
   transition: var(--transition);
@@ -173,7 +173,7 @@ img { max-width: 100%; height: auto; }
   font-weight: 600;
 }
 
-.navbar-links a .nav-icon { display: inline-flex; align-items: center; }
+.navbar-links a .nav-icon { display: none; }
 .navbar-links a .nav-icon svg { width: 16px; height: 16px; }
 
 .navbar-right {
@@ -523,6 +523,32 @@ textarea.form-control { resize: vertical; min-height: 100px; font-family: var(--
   font-size: 13px;
   color: var(--gray-500);
   font-weight: 500;
+}
+
+/* 跨模型对比（MERFISH 页）：SFM-MA vs SaDGAE 指标块 */
+.model-metric-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-card);
+}
+.model-metric-block.sfm { background: var(--primary-100); }
+.model-metric-block.sad { background: var(--success-bg); }
+.model-metric-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--space-md);
+}
+.model-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  flex: none;
 }
 
 /* ==========================================================

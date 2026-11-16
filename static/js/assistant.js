@@ -245,6 +245,60 @@
     report(msgs);
   }
 
+  /** 实验结果页（MERFISH 双粒度对比）：渲染完结果后调用 */
+  function merfish(p) {
+    var msgs = [];
+    msgs.push({ say: '这是 <b>MERFISH</b> 数据在 <b>SFM-MA</b>（空间域 · 粗粒度）与 <b>SaDGAE</b>（细胞类型 · 细粒度）两种粒度下的对比，我来帮你解读 👇' });
+
+    msgs.push({
+      title: '同一组织，两种粒度',
+      tone: 'info',
+      text: 'SFM-MA 在空间坐标上识别出 ' + (p.sfm.nDomains || '—') + ' 个<b>空间域</b>（对照 8 个脑区），' +
+        'SaDGAE 按表达谱聚出 ' + (p.sad.nClusters || '—') + ' 个<b>细胞类型</b>（对照 15 类）。' +
+        '两者放一起，同时得到组织的<b>宏观分区</b>与<b>微观细胞构成</b>——这正是双粒度统一视角的意义。'
+    });
+
+    var sn = p.sfm.nmi != null ? Number(p.sfm.nmi) : null;
+    if (sn != null) {
+      msgs.push({
+        title: 'SFM-MA NMI ' + sn.toFixed(3) + '（空间域 · 粗粒度）',
+        tone: sn >= 0.7 ? 'good' : (sn >= 0.5 ? 'info' : 'warn'),
+        text: '空间分支结合空间坐标与表达谱，NMI ' + sn.toFixed(3) +
+          ' 说明预测空间域与真实脑区高度吻合，组织的宏观解剖结构被清晰还原。'
+      });
+    }
+
+    var dn = p.sad.nmi != null ? Number(p.sad.nmi) : null;
+    if (dn != null) {
+      msgs.push({
+        title: 'SaDGAE NMI ' + dn.toFixed(3) + '（细胞类型 · 细粒度）',
+        tone: dn >= 0.7 ? 'good' : (dn >= 0.5 ? 'info' : 'warn'),
+        text: '单细胞分支仅靠表达谱（不依赖空间坐标）把细胞聚成 ' + (p.sad.nClusters || '—') + ' 簇，' +
+          'NMI ' + dn.toFixed(3) + ' 反映它与 15 类细胞注释的吻合程度。' +
+          '神经元等相似亚型较难区分，是细粒度任务更吃力的原因。'
+      });
+    }
+
+    msgs.push({
+      title: '脑区 × 细胞类型构成：两种粒度的连接',
+      tone: 'info',
+      text: '下方堆叠柱把两种粒度串起来：每根柱是一个<b>脑区</b>（粗粒度），内部按 15 类<b>细胞类型</b>（细粒度）的占比堆叠。' +
+        '看到「某脑区主要由哪几类细胞构成」，就理解了空间域与细胞类型之间的对应关系。'
+    });
+
+    if (p.nMarkers) {
+      msgs.push({
+        title: 'marker 基因热图 + 空间表达',
+        tone: 'info',
+        text: '基因分析区按 SaDGAE 簇找出了 ' + p.nMarkers + ' 个 top marker 基因。' +
+          '热图显示每个 marker 在各簇的相对表达（蓝低、琥珀高）；下方下拉任意基因，可看它在空间上的表达分布——' +
+          '某个 marker 只在特定区域变红，正是该细胞类型所在的位置。'
+      });
+    }
+
+    report(msgs);
+  }
+
   // ── 初始化 ───────────────────────────────────────────────
   function init() {
     var style = document.createElement('style');
@@ -305,5 +359,5 @@
   }
 
   global.SFM = global.SFM || {};
-  global.SFM.assistant = { report: report, predict: predict, scrna: scrna };
+  global.SFM.assistant = { report: report, predict: predict, scrna: scrna, merfish: merfish };
 })(window);

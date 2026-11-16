@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验结果 — MERFISH 双粒度对比 — Unified Graph Omics System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230075de'/><text x='16' y='23' font-size='20' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+<link rel="stylesheet" href="static/css/style.css">
+<script src="static/js/echarts.min.js"></script>
+<script>window.SFM_STATIC={base:"static/"};</script>
+<script src="static/js/app.js"></script>
+<script src="static/js/assistant.js"></script>
+
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-logo">
+      <span class="logo-icon">S</span>
+      CellSpace
+    </a>
+    <div class="navbar-links" id="navLinks">
+      <a href="index.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></span>首页
+      </a>
+      <a href="predict.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3h6M10 3v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 8.5V3"/></svg></span>空间转录组
+      </a>
+      <a href="singlecell.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="2.4"/><circle cx="17" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M9 8.5 11 15M15 8.5 13 15M9.2 7h5.6"/></svg></span>单细胞
+      </a>
+      <a href="merfish.html" class="nav-link active">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>实验结果
+      </a>
+      <a href="tasks.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></span>任务列表
+      </a>
+      <a href="download.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 21h16"/></svg></span>下载
+      </a>
+      <a href="references.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></span>参考文献
+      </a>
+      <a href="guide.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20"/></svg></span>用户指南
+      </a>
+      <a href="contact.html" class="nav-link ">
+        <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/></svg></span>联系我们
+      </a>
+    </div>
+    <button class="navbar-toggle" onclick="toggleNav()" aria-label="导航菜单">☰</button>
+  </div>
+</nav>
+
+
+
+<section class="page-content" style="padding-top: 32px;">
+<div class="page-content-inner">
+
+  <div class="breadcrumb">
+    <a href="index.html">首页</a> <span>/</span> <span style="color: var(--gray-700);">实验结果</span>
+  </div>
+
+  <div class="page-header">
+    <h1><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" style="vertical-align:-3px;margin-right:8px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>实验结果</h1>
+    <p>同一份 MERFISH 下丘脑视前区（POA）数据（5926 细胞 × 155 基因），由 <b>SFM-MA</b> 与 <b>SaDGAE</b> 分别在<b>空间域</b>与<b>细胞类型</b>两种粒度下解析，对照呈现组织的宏观分区与微观细胞构成。</p>
+  </div>
+
+  <div class="alert alert-info" style="font-size:12.5px;margin-bottom:20px;">
+    <b>两种粒度的统一视角</b>：<b>SFM-MA</b> 在空间坐标上识别<b>解剖脑区</b>（粗粒度 · 8 类），
+    <b>SaDGAE</b> 按表达谱聚类<b>细胞类型</b>（细粒度 · 15 类）。两者对照，可同时看到组织的宏观分区与微观细胞构成。
+  </div>
+
+  <!-- ── 指标对比 ─────────────────────────────────────────── -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>性能指标</h3>
+      <span class="pill pill-primary">MERFISH · 5926 cells</span>
+    </div>
+    <p class="form-desc">指标口径：SFM-MA 为单次完整推理结果；SaDGAE 为自优化聚类阶段 best NMI。</p>
+    <div class="grid-2" style="align-items:start;">
+      <div class="model-metric-block sfm">
+        <div class="model-metric-title">
+          <span class="model-dot" style="background:var(--primary-600);"></span>SFM-MA · 空间域（粗粒度）
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-value" id="sfmNmi">—</div><div class="stat-label">NMI</div></div>
+          <div class="stat-card"><div class="stat-value" id="sfmDomains">—</div><div class="stat-label">空间域</div></div>
+        </div>
+      </div>
+      <div class="model-metric-block sad">
+        <div class="model-metric-title">
+          <span class="model-dot" style="background:var(--success);"></span>SaDGAE · 细胞类型（细粒度）
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-value" id="sadNmi">—</div><div class="stat-label">NMI</div></div>
+          <div class="stat-card"><div class="stat-value" id="sadClusters">—</div><div class="stat-label">簇数</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SFM-MA 结果 ──────────────────────────────────────── -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>SFM-MA · 空间域识别</h3>
+      <span class="pill pill-gray">粗粒度 · 脑区</span>
+    </div>
+    <p class="form-desc">左：模型预测的空间域　右：8 个脑区真实注释；下方为 spot 嵌入的 PCA 投影（按预测域着色）。</p>
+    <div class="viz-meta" id="sfmMeta"></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div id="sfmSpatialPred" style="height: 360px;"></div>
+      <div id="sfmSpatialGT" style="height: 360px;"></div>
+    </div>
+    <div id="sfmEmbedding" style="height: 360px; margin-top: 12px;"></div>
+    <p class="chart-note" id="sfmNote"></p>
+  </div>
+
+  <!-- ── SaDGAE 结果 ──────────────────────────────────────── -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>SaDGAE · 细胞类型聚类</h3>
+      <span class="pill pill-gray">细粒度 · 细胞类型</span>
+    </div>
+    <p class="form-desc">上：SaDGAE 最终 64 维嵌入的 UMAP 投影（左为预测聚类、右为 15 类真实细胞类型）；下：同一聚类着色在组织空间坐标上的分布。</p>
+    <div class="viz-meta" id="sadMeta"></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+      <div id="sadUmapPred" style="height: 360px;"></div>
+      <div id="sadUmapTruth" style="height: 360px;"></div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+      <div id="sadSpatialPred" style="height: 360px;"></div>
+      <div id="sadSpatialTruth" style="height: 360px;"></div>
+    </div>
+    <p class="chart-note" id="sadNote"></p>
+  </div>
+
+  <!-- ── 两种粒度的联系：脑区 × 细胞类型构成 ────────────────── -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>脑区 × 细胞类型构成</h3>
+      <span class="pill pill-gray">两种粒度的联系</span>
+    </div>
+    <p class="form-desc">把两种粒度串起来：每个 <b>SFM-MA 空间域（脑区，粗粒度）</b>内部由哪些 <b>细胞类型（细粒度，来自 SaDGAE 的粒度）</b>按什么比例构成。</p>
+    <div id="regionComp" style="height: 420px;"></div>
+    <p class="chart-note">x 轴为 8 个脑区，每根柱按 15 类细胞类型的占比堆叠；悬停查看具体比例。</p>
+  </div>
+
+  <!-- ── 基因表达分析 ──────────────────────────────────────── -->
+  <div class="form-section">
+    <div class="section-title-row">
+      <h3>基因表达分析</h3>
+      <span class="pill pill-gray">top marker genes · SaDGAE 簇</span>
+    </div>
+    <p class="form-desc">按 SaDGAE 预测簇（15 簇）计算每簇 top 3 marker 基因；上方热图展示各 marker 在各簇的相对表达，下方可按基因查看其空间表达分布。</p>
+
+    <h4 style="font-size:14px;font-weight:600;margin:8px 0 4px;">Top marker genes 热图</h4>
+    <div id="geneHeatmap" style="height: 720px;"></div>
+    <p class="chart-note">行为 marker 基因（按所属簇排序），列为 15 个预测簇，值为该基因在该簇的平均表达 z-score（蓝＝低、琥珀＝高）。</p>
+
+    <h4 style="font-size:14px;font-weight:600;margin:20px 0 8px;">空间基因表达</h4>
+    <div class="form-group" style="max-width:340px;">
+      <label>选择 marker 基因</label>
+      <select class="form-control" id="geneSelect">
+        <option value="">— 加载中 —</option>
+      </select>
+    </div>
+    <div id="geneSpatial" style="height: 400px;"></div>
+    <p class="chart-note" id="geneNote"></p>
+  </div>
+
+</div>
+</section>
+
+<script>
+(function () {
+  var S = window.SFM;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function metricCard(id, v) { $(id).textContent = S.fmt(v, 3); }
+
+  var SFM_V = null, SAD_V = null;
+  function assistantReport() {
+    if (!S.assistant || !SFM_V || !SAD_V) return;
+    try {
+      S.assistant.merfish({
+        sfm: {
+          nmi: (SFM_V.metrics || {}).nmi,
+          nDomains: new Set(SFM_V.domain).size,
+          nRegions: new Set(SFM_V.true_label).size
+        },
+        sad: {
+          nmi: (SAD_V.metrics || {}).nmi,
+          nClusters: new Set(SAD_V.pred).size,
+          nCellTypes: new Set(SAD_V.truth).size
+        },
+        nMarkers: 45
+      });
+    } catch (e) { /* 助手失败不影响主流程 */ }
+  }
+
+  // ── SFM-MA（复用已有 /api/visualize/MERFISH）──────────────
+  S.api('/api/visualize/MERFISH?section=_single').then(function (v) {
+    var m = v.metrics || {};
+    metricCard('sfmNmi', m.nmi);
+    $('sfmDomains').textContent = v.domain ? new Set(v.domain).size : '—';
+
+    $('sfmMeta').innerHTML =
+      '<div>总 spot 数<b>' + S.fmtInt(v.n_spots) + '</b></div>' +
+      '<div>图中展示<b>' + S.fmtInt(v.n_shown) + '</b></div>' +
+      '<div>预测空间域<b>' + new Set(v.domain).size + '</b></div>' +
+      '<div>真实脑区<b>' + new Set(v.true_label).size + '</b></div>';
+
+    S.scatterByCategory('sfmSpatialPred', '预测空间域', v.x, v.y, v.domain,
+      { symbolSize: 3.5, invertY: true });
+    S.scatterByCategory('sfmSpatialGT', '真实脑区', v.x, v.y, v.true_label,
+      { symbolSize: 3.5, invertY: true });
+
+    if (v.emb_x) {
+      S.scatterByCategory('sfmEmbedding', 'spot 嵌入 PCA 投影', v.emb_x, v.emb_y, v.domain,
+        { symbolSize: 4, embedding: true, equalAspect: true });
+      var r = v.emb_var_ratio || [0, 0];
+      $('sfmNote').innerHTML = '按预测空间域着色。PC1 解释方差 <b>' + (r[0] * 100).toFixed(1) +
+        '%</b>，PC2 <b>' + (r[1] * 100).toFixed(1) + '%</b>。';
+    }
+
+    SFM_V = v;
+    assistantReport();
+  }).catch(function (e) {
+    $('sfmNote').innerHTML = '<span class="alert alert-warn">SFM-MA 结果加载失败：' + e.message + '</span>';
+  });
+
+  // ── SaDGAE（复用 /api/scrna/visualize/MERFISH）────────────
+  S.api('/api/scrna/visualize/MERFISH').then(function (v) {
+    var m = v.metrics || {};
+    metricCard('sadNmi', m.nmi);
+    $('sadClusters').textContent = v.pred ? new Set(v.pred).size : '—';
+
+    $('sadMeta').innerHTML =
+      '<div>细胞数<b>' + S.fmtInt(v.x.length) + '</b></div>' +
+      '<div>簇数<b>' + new Set(v.pred).size + '</b></div>' +
+      '<div>NMI<b>' + S.fmt(m.nmi, 3) + '</b></div>';
+
+    S.scatterByCategory('sadUmapPred', '预测聚类（UMAP）', v.x, v.y, v.pred,
+      { symbolSize: 4, equalAspect: true });
+    S.scatterByCategory('sadUmapTruth', '真实细胞类型（UMAP）', v.x, v.y, v.truth,
+      { symbolSize: 4, equalAspect: true });
+
+    if (v.sx) {
+      S.scatterByCategory('sadSpatialPred', '预测聚类（空间）', v.sx, v.sy, v.pred,
+        { symbolSize: 3.5, invertY: true });
+      S.scatterByCategory('sadSpatialTruth', '真实细胞类型（空间）', v.sx, v.sy, v.truth,
+        { symbolSize: 3.5, invertY: true });
+    }
+
+    $('sadNote').innerHTML = v.embedding_note || '';
+
+    SAD_V = v;
+    assistantReport();
+  }).catch(function (e) {
+    $('sadNote').innerHTML = '<span class="alert alert-warn">SaDGAE 结果加载失败：' + e.message +
+      '<br>请先运行 python web/build_merfish_sadgae.py 生成数据。</span>';
+  });
+
+  // ── 基因表达分析：top marker 热图 + 空间基因表达 ─────────
+  var GENES = null;
+
+  function renderGeneHeatmap(h) {
+    var data = [], min = Infinity, max = -Infinity;
+    for (var i = 0; i < h.genes.length; i++) {
+      for (var j = 0; j < h.clusters.length; j++) {
+        var v = h.matrix[i][j];
+        data.push([j, i, v]);
+        if (v < min) min = v;
+        if (v > max) max = v;
+      }
+    }
+    S.chart('geneHeatmap', {
+      tooltip: S.tooltipStyle({
+        formatter: function (p) {
+          return '<b>' + h.genes[p.value[1]] + '</b> · ' + h.clusters[p.value[0]] +
+            '<br/>z-score ' + Number(p.value[2]).toFixed(2);
+        }
+      }),
+      grid: { left: 130, right: 24, top: 8, bottom: 56 },
+      xAxis: {
+        type: 'category', data: h.clusters, splitArea: { show: true },
+        axisLabel: { color: S.C.textSoft, fontSize: 10, interval: 0 },
+        axisLine: { lineStyle: { color: S.C.grayLine } }
+      },
+      yAxis: {
+        type: 'category', data: h.genes, splitArea: { show: true },
+        axisLabel: { color: S.C.textSoft, fontSize: 10 },
+        axisLine: { lineStyle: { color: S.C.grayLine } }
+      },
+      visualMap: {
+        min: Math.floor(min), max: Math.ceil(max), calculable: false,
+        orient: 'horizontal', left: 'center', bottom: 0,
+        inRange: { color: ['#3b82f6', '#f8fafc', '#f59e0b'] },
+        textStyle: { color: S.C.textSoft, fontSize: 10 }
+      },
+      series: [{
+        type: 'heatmap', data: data,
+        label: { show: false },
+        emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.2)' } }
+      }]
+    });
+  }
+
+  function renderGeneSpatial(idx) {
+    var name = GENES.genes[idx];
+    S.scatterByValue('geneSpatial', name, GENES.spatial_x, GENES.spatial_y,
+      GENES.expr[idx], { symbolSize: 3.5, invertY: true });
+    $('geneNote').textContent = '基因 ' + name + ' 的 log 归一化表达空间分布（颜色由浅灰到红，越红表达越高）。';
+  }
+
+  function renderComposition(comp) {
+    if (!comp) return;
+    var series = comp.cell_types.map(function (ct, j) {
+      return {
+        name: ct, type: 'bar', stack: 'total', barMaxWidth: 46,
+        emphasis: { focus: 'series' },
+        itemStyle: { color: S.PALETTE[j % S.PALETTE.length] },
+        data: comp.regions.map(function (r, i) { return comp.matrix[i][j]; })
+      };
+    });
+    S.chart('regionComp', {
+      tooltip: S.tooltipStyle({
+        trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: function (params) {
+          var lines = ['<b>' + params[0].axisValue + '</b>'];
+          params.slice().sort(function (a, b) { return b.value - a.value; }).forEach(function (p) {
+            if (p.value > 0.01) lines.push(p.marker + p.seriesName + '　' + Number(p.value).toFixed(1) + '%');
+          });
+          return lines.join('<br/>');
+        }
+      }),
+      legend: {
+        type: 'scroll', top: 0, itemWidth: 10, itemHeight: 10,
+        textStyle: { fontSize: 10, color: S.C.textSoft }, data: comp.cell_types
+      },
+      grid: { left: 46, right: 16, top: 44, bottom: 30 },
+      xAxis: {
+        type: 'category', data: comp.regions,
+        axisLabel: { color: S.C.textSoft, fontSize: 11 },
+        axisLine: { lineStyle: { color: S.C.grayLine } },
+        axisTick: { show: false }
+      },
+      yAxis: {
+        type: 'value', max: 100,
+        axisLabel: { color: S.C.textSoft, fontSize: 10, formatter: '{value}%' },
+        splitLine: { lineStyle: { color: S.C.grayLine, type: 'dashed' } }
+      },
+      series: series,
+      animation: false
+    });
+  }
+
+  S.api('/api/scrna/genes/MERFISH').then(function (g) {
+    GENES = g;
+    renderComposition(g.composition);
+    renderGeneHeatmap(g.heatmap);
+    $('geneSelect').innerHTML = g.genes.map(function (name, i) {
+      return '<option value="' + i + '">' + name + '</option>';
+    }).join('');
+    renderGeneSpatial(0);
+  }).catch(function (e) {
+    $('geneHeatmap').innerHTML = '<div class="alert alert-warn">基因分析数据加载失败：' + e.message +
+      '<br>请先运行 python web/build_merfish_genes.py 生成数据。</div>';
+  });
+
+  $('geneSelect').addEventListener('change', function () {
+    renderGeneSpatial(parseInt(this.value, 10));
+  });
+})();
+</script>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h4>CellSpace-Bridge</h4>
+      <p>融合 SaDGAE 与 SFM-MA 的统一图表示学习系统，面向单细胞聚类与空间转录组空间域识别。</p>
+    </div>
+    <div class="footer-col">
+      <h5>平台</h5>
+      <a href="predict.html">空间转录组</a>
+      <a href="singlecell.html">单细胞聚类</a>
+      <a href="merfish.html">实验结果</a>
+      <a href="tasks.html">任务列表</a>
+      <a href="download.html">下载中心</a>
+    </div>
+    <div class="footer-col">
+      <h5>资源</h5>
+      <a href="references.html">参考文献</a>
+      <a href="guide.html">用户指南</a>
+      <a href="https://github.com/lxh321123/SFM-MA" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-col">
+      <h5>关于</h5>
+      <a href="contact.html">联系我们</a>
+      <a href="https://arxiv.org" target="_blank">论文预印本</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 CellSpace-Bridge Team. Licensed under MIT. Free for academic use.
+  </div>
+</footer>
+
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+// 点击页面其他区域关闭导航
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.navbar')) {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+});
+</script>
+
+
+<script>
+/* 静态模式：把页面上残留的 /api/download/<key> 链接改写到 files/ 实际文件 */
+(function () {
+  if (!window.SFM_STATIC) return;
+  fetch(window.SFM_STATIC.base + 'data/downloads.json')
+    .then(function (r) { return r.json(); })
+    .then(function (list) {
+      var by = {};
+      list.forEach(function (i) { by[i.key] = i; });
+      document.querySelectorAll('a[href*="/api/download/"]').forEach(function (a) {
+        var key = a.getAttribute('href').split('/api/download/')[1];
+        var item = by[key];
+        if (item && item.available) {
+          // href 已是相对站点根的 files/xxx，页面本身也在根目录，直接用即可
+          a.setAttribute('href', item.href);
+          a.setAttribute('download', item.filename);
+        } else {
+          a.classList.add('disabled');
+          a.removeAttribute('href');
+          a.title = item && item.reason ? item.reason : '该文件未包含在静态站点中';
+        }
+      });
+    });
+})();
+</script>
+</body>
+</html>

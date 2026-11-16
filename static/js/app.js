@@ -66,6 +66,10 @@
       var scds = base.slice('/api/scrna/visualize/'.length);
       return { url: STATIC.base + 'scrna_viz/' + scds + '/viz.json' };
     }
+    if (base.indexOf('/api/scrna/genes/') === 0) {
+      var gds = base.slice('/api/scrna/genes/'.length);
+      return { url: STATIC.base + 'scrna_viz/' + gds + '/genes.json' };
+    }
     if (base === '/api/metrics') {
       return {
         url: STATIC.base + STATIC_MAP[base],
@@ -406,6 +410,54 @@
     });
   }
 
+  /**
+   * 连续值散点图（空间基因表达等）：按数值大小映射到连续色带。
+   * values 为每个点的数值，visualMap 提供颜色刻度。
+   */
+  function scatterByValue(id, title, xs, ys, values, opts) {
+    opts = opts || {};
+    var data = [];
+    var min = Infinity, max = -Infinity;
+    for (var i = 0; i < xs.length; i++) {
+      var v = Number(values[i]);
+      data.push([Number(xs[i]), Number(ys[i]), v]);
+      if (isFinite(v)) { if (v < min) min = v; if (v > max) max = v; }
+    }
+    if (!isFinite(min) || !isFinite(max)) { min = 0; max = 1; }
+    if (min === max) max = min + 1;
+
+    return chart(id, {
+      title: title ? {
+        text: title, left: 'center', top: 2,
+        textStyle: { fontSize: 13, fontWeight: 600, color: C.text, fontFamily: FONT }
+      } : undefined,
+      tooltip: tooltipStyle({
+        formatter: function (p) {
+          return '表达 <b>' + Number(p.value[2]).toFixed(2) + '</b><br/>(' +
+            Number(p.value[0]).toFixed(1) + ', ' + Number(p.value[1]).toFixed(1) + ')';
+        }
+      }),
+      visualMap: {
+        min: min, max: max,
+        orient: 'vertical', right: 6, top: 'center',
+        dimension: 2,
+        text: ['高', '低'],
+        calculable: false,
+        inRange: { color: opts.colors || ['#d9d9d9', '#f59e0b', '#d62728'] },
+        textStyle: { color: C.textSoft, fontSize: 10 }
+      },
+      grid: { left: 8, right: 56, top: title ? 28 : 8, bottom: 8 },
+      xAxis: { show: false, scale: true },
+      yAxis: { show: false, scale: true, inverse: !!opts.invertY },
+      series: [{
+        type: 'scatter', data: data,
+        symbolSize: opts.symbolSize || 4,
+        itemStyle: { opacity: 0.85 }
+      }],
+      animation: false
+    });
+  }
+
   /** 横向条形图，突出首项（通常是 SFM-MA） */
   function barCompare(id, names, values, opts) {
     opts = opts || {};
@@ -443,6 +495,6 @@
     catClass: catClass, deltaClass: deltaClass,
     chart: chart, charts: _charts, disposeChart: disposeChart,
     axisStyle: axisStyle, tooltipStyle: tooltipStyle, baseGrid: baseGrid,
-    scatterByCategory: scatterByCategory, barCompare: barCompare
+    scatterByCategory: scatterByCategory, scatterByValue: scatterByValue, barCompare: barCompare
   });
 })(window);
